@@ -2133,12 +2133,15 @@
                       </div>
                     </div>
                   </div>
-                  <h6 class="card__sub-title mb-10">Total Order</h6>
-                  <h4 class="card__title mb-10">$84.00K</h4>
-                  <span class="card__desc style_two"
-                    ><span class="price-increase"
-                      ><i class="fa-light fa-arrow-up"></i> +17.5%</span
-                    >
+                  <h6 class="card__sub-title mb-10">Total Orders</h6>
+                  <h4 class="card__title mb-10"><%= getSafeValue(orders_counts.data,'current_week_total') %></h4>
+                  <span class="card__desc style_two">
+                    <% if(orders_counts?.is_positive){ %>
+                    
+                    <span class="price-increase"><i class="fa-light fa-arrow-up"></i><%= getSafeValue(orders_counts.data,'percentage_change') %></span>
+                    <% } else { %>
+                    <span class="price-decrease"><i class="fa-light fa-arrow-down"></i><%= getSafeValue(orders_counts.data,'percentage_change') %></span>
+                    <% } %>
                     Than Last Week</span
                   >
                 </div>
@@ -2168,12 +2171,14 @@
                       </div>
                     </div>
                   </div>
-                  <h6 class="card__sub-title mb-10">Product Views</h6>
-                  <h4 class="card__title mb-10">3.00M</h4>
-                  <span class="card__desc style_two"
-                    ><span class="price-increase"
-                      ><i class="fa-light fa-arrow-up"></i> +17.5%</span
-                    >
+                  <h6 class="card__sub-title mb-10">Total Products</h6>
+                  <h4 class="card__title mb-10"> <%= getSafeValue(product_counts.data, 'current_week_total') %></h4>
+                  <span class="card__desc style_two">
+                    <% if(product_counts?.is_positive){ %>
+                    <span class="price-increase"><i class="fa-light fa-arrow-up"></i><%= getSafeValue(product_counts.data, 'percentage_change') %> </span>
+                    <% } else { %>
+                    <span class="price-decrease"><i class="fa-light fa-arrow-down"></i><%= getSafeValue(product_counts.data, 'percentage_change') %> </span>
+                    <% } %>
                     Than Last Week</span
                   >
                 </div>
@@ -2204,11 +2209,13 @@
                     </div>
                   </div>
                   <h6 class="card__sub-title mb-10">Total Customers</h6>
-                  <h4 class="card__title mb-10">12.00K</h4>
-                  <span class="card__desc style_two"
-                    ><span class="price-decrease"
-                      ><i class="fa-light fa-arrow-down"></i> +17.5%</span
-                    >
+                  <h4 class="card__title mb-10"><%= getSafeValue(customers_counts.data, 'current_week_total') %></h4>
+                  <span class="card__desc style_two">
+                    <% if(customers_counts?.is_positive){ %>
+                    <span class="price-increase"><i class="fa-light fa-arrow-up"></i><%= getSafeValue(customers_counts.data, 'percentage_change') %></span>
+                    <% } else { %>
+                    <span class="price-decrease"><i class="fa-light fa-arrow-down"></i><%= getSafeValue(customers_counts.data, 'percentage_change') %></span>
+                    <% } %>
                     Than Last Week</span
                   >
                 </div>
@@ -2239,11 +2246,13 @@
                     </div>
                   </div>
                   <h6 class="card__sub-title mb-10">Total Income</h6>
-                  <h4 class="card__title mb-10">$59.00K</h4>
-                  <span class="card__desc style_two"
-                    ><span class="price-increase"
-                      ><i class="fa-light fa-arrow-up"></i> +17.5%</span
-                    >
+                  <h4 class="card__title mb-10"><%= getSafeValue(sales_count.data, 'current_week_total') %></h4>
+                  <span class="card__desc style_two">
+                    <% if(sales_count?.is_positive){ %>
+                    <span class="price-increase"><i class="fa-light fa-arrow-up"></i><%= getSafeValue(sales_count.data, 'percentage_change') %></span>
+                    <% } else { %>
+                    <span class="price-decrease"><i class="fa-light fa-arrow-down"></i><%= getSafeValue(sales_count.data, 'percentage_change') %></span>
+                    <% } %>
                     Than Last Week</span
                   >
                 </div>
