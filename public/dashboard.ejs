@@ -2246,7 +2246,7 @@
                     </div>
                   </div>
                   <h6 class="card__sub-title mb-10">Total Income</h6>
-                  <h4 class="card__title mb-10"><%= getSafeValue(sales_count.data, 'current_week_total') %></h4>
+                  <h4 class="card__title mb-10">₹ <%= getSafeValue(sales_count.data, 'current_week_total_cost') %></h4>
                   <span class="card__desc style_two">
                     <% if(sales_count?.is_positive){ %>
                     <span class="price-increase"><i class="fa-light fa-arrow-up"></i><%= getSafeValue(sales_count.data, 'percentage_change') %></span>
@@ -2261,7 +2261,7 @@
             <div class="col-xxl-3 col-xl-5 col-lg-4 col-md-5">
               <div class="card__wrapper">
                 <div class="card__top-box d-flex justify-content-between mb-10">
-                  <h5 class="card__heading-title">Audience</h5>
+                  <h5 class="card__heading-title">Highest Selling Product</h5>
                   <div class="card__dropdown">
                     <div class="dropdown">
                       <button>
@@ -2289,64 +2289,25 @@
                 >
                   <div class="right-box">
                     <span class="card__desc style_two dot mb-5"
-                      >Total Subscribed</span
+                      >Product Name</span
                     >
                     <h4 class="card__title">
-                      <span class="price-increase"
+                      <span class="price-increase" id="product_name"
                         ><i class="fa-sharp fa-solid fa-caret-up"></i
                       ></span>
-                      279M
+                      
                     </h4>
                   </div>
                   <div class="left-box">
                     <span class="card__desc style_two dot down mb-5"
-                      >New User</span
+                      >Product Price</span
                     >
                     <h4 class="card__title">
-                      <span class="price-decrease"
+                      <span class="price-increase" id="product_price"
                         ><i class="fa-sharp fa-solid fa-caret-down"></i
                       ></span>
-                      8900K
+                      
                     </h4>
-                  </div>
-                </div>
-                <div
-                  class="card__meta-box d-flex justify-content-between align-items-end"
-                >
-                  <div class="avatar">
-                    <ul>
-                      <li>
-                        <img
-                          class="img-36 border-circle"
-                          src="assets/images/avatar/avatar1.png"
-                          alt="image"
-                        />
-                      </li>
-                      <li>
-                        <img
-                          class="img-36 border-circle"
-                          src="assets/images/avatar/avatar2.png"
-                          alt="image"
-                        />
-                      </li>
-                      <li>
-                        <img
-                          class="img-36 border-circle"
-                          src="assets/images/avatar/avatar3.png"
-                          alt="image"
-                        />
-                      </li>
-                      <li>
-                        <img
-                          class="img-36 border-circle"
-                          src="assets/images/avatar/avatar4.png"
-                          alt="image"
-                        />
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="card__icon-box">
-                    <i class="fa-light fa-gear"></i>
                   </div>
                 </div>
               </div>

@@ -1,5 +1,26 @@
-(function ($) {
+
+
+(async function ($) {
   "use strict";
+  async function getCategoryBasedSalesApi() {
+    const get_all_category_based_sales=await fetch('http://127.0.0.1:8000/get_all_category_based_sales')
+
+    const get_all_category_based_sales_res = await get_all_category_based_sales.json();
+    
+    return get_all_category_based_sales_res
+    }
+
+    const all_category=await getCategoryBasedSalesApi()
+    const all_category_keys=Object.keys(all_category)
+    const all_category_values=Object.values(all_category)
+
+    document.getElementById('product_name').innerHTML=all_category_keys[all_category_values.indexOf(Math.max(...all_category_values))]
+    document.getElementById('product_price').innerHTML="₹"+ " "+(Math.max(...all_category_values)).toFixed(2)
+
+    console.log(all_category)
+
+
+
   var windowOn = $(window);
 
   /* working hour chart */
@@ -497,8 +518,8 @@
   /* Pie Chart */
   if (jQuery("#pieChartAud").length > 0) {
     var options = {
-      series: [25, 75],
-      labels: ["Subscriber", "New User"],
+      series: all_category_values,
+      labels: all_category_keys,
       chart: {
         type: "donut",
         width: "100%",
@@ -511,14 +532,14 @@
       },
       plotOptions: {
         pie: {
-          size: 150,
+          size: 250,
           donut: {
             position: "center",
             labels: {
               show: true,
               name: {
                 show: true,
-                fontSize: "18px",
+                fontSize: "14px",
                 color: "var(--clr-action-success)",
                 offsetY: 5,
               },
@@ -551,7 +572,7 @@
         enabled: true,
         y: {
           formatter: function (val) {
-            return val + "" + "%";
+            return "₹" + " " +val;
           },
           color: "var(--clr-action-success)",
         },
