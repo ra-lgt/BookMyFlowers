@@ -1,14 +1,84 @@
-
-
 (async function ($) {
-  "use strict";
-  async function getCategoryBasedSalesApi() {
-    const get_all_category_based_sales=await fetch('http://127.0.0.1:8000/get_all_category_based_sales')
+  let cart_sales_stat=undefined
+  let year_sales_stat={
+    sales_data:[0,0,0,0,0,0,0,0,0,0,0,0],
+    cart_data:[0,0,0,0,0,0,0,0,0,0,0,0],
+    month_interval:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+  }
+  let month_sales_stat=undefined
+  let week_sales_stat={
+    sales_data:[0,0,0,0,0,0,0],
+    cart_data:[0,0,0,0,0,0,0],
+    day_interval:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
+  }
 
-    const get_all_category_based_sales_res = await get_all_category_based_sales.json();
-    
-    return get_all_category_based_sales_res
+
+async function getCategoryBasedSalesApi() {
+  const get_all_category_based_sales=await fetch('http://127.0.0.1:8000/get_all_category_based_sales')
+
+  const get_all_category_based_sales_res = await get_all_category_based_sales.json();
+  
+  return get_all_category_based_sales_res
+  }
+
+
+
+  async function getCartSalesStatApi(interval_type="year") {
+    let to_timestamp = undefined;
+    let from_timestamp = undefined;
+
+    const currentDate = new Date();
+
+    if(interval_type == "week") {
+        const startOfWeek = new Date(currentDate);
+        startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+        startOfWeek.setHours(0, 0, 0, 0);
+        
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        endOfWeek.setHours(23, 59, 59, 999);
+        
+        from_timestamp = Math.floor(startOfWeek.getTime() / 1000);
+        to_timestamp = Math.floor(endOfWeek.getTime() / 1000);
+    } 
+    else if(interval_type == "month") {
+        const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+        startOfMonth.setHours(0, 0, 0, 0);
+        
+        const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+        endOfMonth.setHours(23, 59, 59, 999);
+        
+        from_timestamp = Math.floor(startOfMonth.getTime() / 1000);
+        to_timestamp = Math.floor(endOfMonth.getTime() / 1000);
+    } 
+    else if(interval_type == "year") {
+        const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
+        startOfYear.setHours(0, 0, 0, 0);
+        
+        const endOfYear = new Date(currentDate.getFullYear(), 11, 31);
+        endOfYear.setHours(23, 59, 59, 999);
+        
+        from_timestamp = Math.floor(startOfYear.getTime() / 1000);
+        to_timestamp = Math.floor(endOfYear.getTime() / 1000);
     }
+
+    const get_cart_sales_stat = await fetch('http://127.0.0.1:8000/get_cart_and_sales', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            from_timestamp: from_timestamp,
+            to_timestamp: to_timestamp,
+        }),
+    });
+
+    const get_cart_sales_stat_res = await get_cart_sales_stat.json();
+    console.log("interval_type",get_cart_sales_stat_res);
+
+    return get_cart_sales_stat_res;
+}
+
+
+  
 
     const all_category=await getCategoryBasedSalesApi()
     const all_category_keys=Object.keys(all_category)
@@ -16,8 +86,47 @@
 
     document.getElementById('product_name').innerHTML=all_category_keys[all_category_values.indexOf(Math.max(...all_category_values))]
     document.getElementById('product_price').innerHTML="₹"+ " "+(Math.max(...all_category_values)).toFixed(2)
+    const results = await Promise.all(
+    ["year","month","week"].map(async(interval_type,key)=>{
+        cart_sales_stat=await getCartSalesStatApi(interval_type)
+        const {cart_data,sales_data}=cart_sales_stat
+        cart_data.map((value,key)=>{
+          let date=undefined
+          if(interval_type=="year"){
+            date=new Date(value?.timestamp)
+            year_sales_stat['cart_data'][date.getMonth()]+=value?.product_count
+          }
 
-    console.log(all_category)
+          else if(interval_type=="week"){
+            date=new Date(value?.timestamp)
+            week_sales_stat['cart_data'][date.getDay()]+=value?.product_count
+          }
+        })
+    
+    
+        sales_data.map((value,key)=>{
+          let date=undefined
+          if(interval_type=="year"){
+            date=new Date(value?.date_created)
+            year_sales_stat['sales_data'][date.getMonth()]+=value?.products_id.length
+          }
+          else if(interval_type=="week"){
+            date=new Date(value?.timestamp)
+            week_sales_stat['sales_data'][date.getDay()]+=value?.product_count
+          }
+        })
+
+
+      
+    })
+  )
+
+
+    
+
+    console.log(year_sales_stat,week_sales_stat)
+
+
 
 
 
@@ -289,12 +398,12 @@
     var options = {
       series: [
         {
-          name: "sale",
-          data: [35, 45, 28, 61, 62, 80, 90],
+          name: "user_cart",
+          data: week_sales_stat?.cart_data,
         },
         {
-          name: "series2",
-          data: [25, 32, 35, 55, 50, 70, 101],
+          name: "sales",
+          data: week_sales_stat?.sales_data,
         },
       ],
       chart: {
@@ -324,7 +433,7 @@
         borderColor: "#E6E6E6",
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories: week_sales_stat?.day_interval,
         labels: {
           style: {
             colors: "var(--clr-chart-1)",
@@ -363,6 +472,7 @@
   }
   /* line Chart Monthly */
   if (jQuery("#lineChartMonth").length > 0) {
+    console.log("clcikeddd month")
     var options = {
       series: [
         {
@@ -443,16 +553,15 @@
     var options = {
       series: [
         {
-          name: "sale",
-          data: [50, 40, 38, 61, 82, 109, 100],
+          name: "user_cart",
+          data: year_sales_stat?.cart_data,
         },
         {
-          name: "series2",
-          data: [40, 50, 65, 32, 70, 90, 80],
+          name: "sales",
+          data: year_sales_stat?.sales_data,
         },
       ],
       chart: {
-        height: 283,
         offsetX: 0,
         type: "area",
         // offsetY: 2,
@@ -478,7 +587,7 @@
         borderColor: "#E6E6E6",
       },
       xaxis: {
-        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        categories: year_sales_stat?.month_interval,
         labels: {
           style: {
             colors: "var(--clr-chart-1)",
@@ -494,7 +603,7 @@
         labels: {
           offsetX: -10,
           formatter: function (value) {
-            return value + "k";
+            return value +" "+ "products";
           },
           style: {
             colors: "var(--clr-chart-1)",
