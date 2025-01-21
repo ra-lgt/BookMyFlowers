@@ -2337,7 +2337,7 @@
                             aria-controls="pills-bar-year"
                             aria-selected="true"
                           >
-                            1Y
+                            <%= currentYear-2 %>
                           </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -2351,7 +2351,7 @@
                             aria-controls="pills-bar-month"
                             aria-selected="false"
                           >
-                            1M
+                          <%= currentYear-1 %>
                           </button>
                         </li>
                         <li class="nav-item" role="presentation">
@@ -2365,7 +2365,7 @@
                             aria-controls="pills-bar-week"
                             aria-selected="false"
                           >
-                            1W
+                          <%= currentYear %>
                           </button>
                         </li>
                       </ul>
@@ -2374,6 +2374,7 @@
                 </div>
                 <div class="card__content">
                   <div class="tab-content" id="pills-tabContent2">
+                    <!-- Year Tab -->
                     <div
                       class="tab-pane fade"
                       id="pills-bar-year"
@@ -2381,9 +2382,11 @@
                       aria-labelledby="pills-bar-year-tab"
                     >
                       <div class="card__line-chart">
-                        <div id="salesChartYearly"></div>
+                        <div id="chart_0"></div>
                       </div>
                     </div>
+            
+                    <!-- Month Tab -->
                     <div
                       class="tab-pane fade"
                       id="pills-bar-month"
@@ -2391,9 +2394,11 @@
                       aria-labelledby="pills-bar-month-tab"
                     >
                       <div class="card__line-chart">
-                        <div id="salesChartMonthly"></div>
+                        <div id="chart_1"></div>
                       </div>
                     </div>
+            
+                    <!-- Week Tab -->
                     <div
                       class="tab-pane fade show active"
                       id="pills-bar-week"
@@ -2401,7 +2406,7 @@
                       aria-labelledby="pills-bar-week-tab"
                     >
                       <div class="card__line-chart">
-                        <div id="salesChartWeek"></div>
+                        <div id="chart_2"></div>
                       </div>
                     </div>
                   </div>
@@ -2426,6 +2431,7 @@
                 </div>
               </div>
             </div>
+            
             <div class="col-xxl-3 col-xl-5 col-lg-6">
               <div class="card__wrapper">
                 <div
@@ -2927,38 +2933,23 @@
                       </tr>
                     </thead>
                     <tbody class="table__body">
+                      <% sales_based_product.forEach(product => { %>
                       <tr>
-                        <td class="table__checkbox">
-                          <input type="checkbox" />
-                        </td>
                         <td class="tabel__meta">
                           <div class="d-flex align-items-center gap-10">
                             <div class="table-thumb">
                               <img
-                                src="assets/images/avatar/avatar.png"
+                                src="<%= product?.image %>"
                                 alt="image"
                               />
                             </div>
-                            <span class="table__meta-name">Parller Hok</span>
+                            <span class="table__meta-name"><%= product.product_name %></span>
                           </div>
                         </td>
-                        <td class="table__cat">Development</td>
-                        <td class="table__email">
-                          <a
-                            href="/cdn-cgi/l/email-protection#7e101f131b3e131f101b04501d1113"
-                            ><span
-                              class="__cf_email__"
-                              data-cfemail="97f9f6faf2d7faf6f9f2edb9f4f8fa"
-                              >[email&#160;protected]</span
-                            ></a
-                          >
-                        </td>
-                        <td class="table__location">
-                          <a class="bd-badge bg-success" href="#"
-                            >United Kingdom</a
-                          >
-                        </td>
-                        <td class="table__date">Oct 15 - Dec 20, 2024</td>
+                        <td class="table__cat"><%= product.store_name %></td>
+
+                        <td class="table__cat"><%= product.total_sold %></td>
+                        <td class="table__date"><%= product.date_created %></td>
                         <td class="table__icon-box">
                           <div
                             class="d-flex align-items-center justify-content-center gap-10"
@@ -2974,194 +2965,7 @@
                           </div>
                         </td>
                       </tr>
-                      <tr>
-                        <td class="table__checkbox">
-                          <input type="checkbox" />
-                        </td>
-                        <td class="tabel__meta">
-                          <div class="d-flex align-items-center gap-10">
-                            <div class="table-thumb">
-                              <img
-                                src="assets/images/avatar/avatar2.png"
-                                alt="image"
-                              />
-                            </div>
-                            <span class="table__meta-name">Parller Hok</span>
-                          </div>
-                        </td>
-                        <td class="table__cat">Representative</td>
-                        <td class="table__email">
-                          <a
-                            href="/cdn-cgi/l/email-protection#f698979b93b69b9798938cd895999b"
-                            ><span
-                              class="__cf_email__"
-                              data-cfemail="147a7579715479757a716e3a777b79"
-                              >[email&#160;protected]</span
-                            ></a
-                          >
-                        </td>
-                        <td class="table__location">
-                          <a class="bd-badge bg-secondary" href="#"
-                            >United Kingdom</a
-                          >
-                        </td>
-                        <td class="table__date">Oct 15 - Dec 20, 2024</td>
-                        <td class="table__icon-box">
-                          <div
-                            class="d-flex align-items-center justify-content-center gap-10"
-                          >
-                            <a href="#" class="table__icon download">
-                              <i
-                                class="fa-regular fa-arrow-down-to-bracket"
-                              ></i>
-                            </a>
-                            <a href="#" class="table__icon edit">
-                              <i class="fa-sharp fa-light fa-pen"></i>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table__checkbox">
-                          <input type="checkbox" />
-                        </td>
-                        <td class="tabel__meta">
-                          <div class="d-flex align-items-center gap-10">
-                            <div class="table-thumb">
-                              <img
-                                src="assets/images/avatar/avatar3.png"
-                                alt="image"
-                              />
-                            </div>
-                            <span class="table__meta-name">Parller Hok</span>
-                          </div>
-                        </td>
-                        <td class="table__cat">Sales Director</td>
-                        <td class="table__email">
-                          <a
-                            href="/cdn-cgi/l/email-protection#a8c6c9c5cde8c5c9c6cdd286cbc7c5"
-                            ><span
-                              class="__cf_email__"
-                              data-cfemail="8fe1eee2eacfe2eee1eaf5a1ece0e2"
-                              >[email&#160;protected]</span
-                            ></a
-                          >
-                        </td>
-                        <td class="table__location">
-                          <a class="bd-badge bg-theme" href="#"
-                            >United Kingdom</a
-                          >
-                        </td>
-                        <td class="table__date">Oct 15 - Dec 20, 2024</td>
-                        <td class="table__icon-box">
-                          <div
-                            class="d-flex align-items-center justify-content-center gap-10"
-                          >
-                            <a href="#" class="table__icon download">
-                              <i
-                                class="fa-regular fa-arrow-down-to-bracket"
-                              ></i>
-                            </a>
-                            <a href="#" class="table__icon edit">
-                              <i class="fa-sharp fa-light fa-pen"></i>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table__checkbox">
-                          <input type="checkbox" />
-                        </td>
-                        <td class="tabel__meta">
-                          <div class="d-flex align-items-center gap-10">
-                            <div class="table-thumb">
-                              <img
-                                src="assets/images/avatar/avatar4.png"
-                                alt="image"
-                              />
-                            </div>
-                            <span class="table__meta-name">Parller Hok</span>
-                          </div>
-                        </td>
-                        <td class="table__cat">Account Manager</td>
-                        <td class="table__email">
-                          <a
-                            href="/cdn-cgi/l/email-protection#c7a9a6aaa287aaa6a9a2bde9a4a8aa"
-                            ><span
-                              class="__cf_email__"
-                              data-cfemail="026c636f67426f636c67782c616d6f"
-                              >[email&#160;protected]</span
-                            ></a
-                          >
-                        </td>
-                        <td class="table__location">
-                          <a class="bd-badge bg-danger" href="#"
-                            >United Kingdom</a
-                          >
-                        </td>
-                        <td class="table__date">Oct 15 - Dec 20, 2024</td>
-                        <td class="table__icon-box">
-                          <div
-                            class="d-flex align-items-center justify-content-center gap-10"
-                          >
-                            <a href="#" class="table__icon download">
-                              <i
-                                class="fa-regular fa-arrow-down-to-bracket"
-                              ></i>
-                            </a>
-                            <a href="#" class="table__icon edit">
-                              <i class="fa-sharp fa-light fa-pen"></i>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="table__checkbox">
-                          <input type="checkbox" />
-                        </td>
-                        <td class="tabel__meta">
-                          <div class="d-flex align-items-center gap-10">
-                            <div class="table-thumb">
-                              <img
-                                src="assets/images/avatar/avatar5.png"
-                                alt="image"
-                              />
-                            </div>
-                            <span class="table__meta-name">Parller Hok</span>
-                          </div>
-                        </td>
-                        <td class="table__cat">Sales Analyst</td>
-                        <td class="table__email">
-                          <a
-                            href="/cdn-cgi/l/email-protection#a0cec1cdc5e0cdc1cec5da8ec3cfcd"
-                            ><span
-                              class="__cf_email__"
-                              data-cfemail="8de3ece0e8cde0ece3e8f7a3eee2e0"
-                              >[email&#160;protected]</span
-                            ></a
-                          >
-                        </td>
-                        <td class="table__location">
-                          <a class="bd-badge bg-info" href="#"
-                            >United Kingdom</a
-                          >
-                        </td>
-                        <td class="table__date">Oct 15 - Dec 20, 2024</td>
-                        <td class="table__icon-box">
-                          <div
-                            class="d-flex align-items-center justify-content-center gap-10"
-                          >
-                            <a href="#" class="table__icon download">
-                              <i
-                                class="fa-regular fa-arrow-down-to-bracket"
-                              ></i>
-                            </a>
-                            <a href="#" class="table__icon edit">
-                              <i class="fa-sharp fa-light fa-pen"></i>
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
+                      <% }); %>
                     </tbody>
                   </table>
                 </div>
