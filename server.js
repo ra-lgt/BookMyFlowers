@@ -20,7 +20,7 @@ app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
 
 app.get('/', async(req, res) => {
   const currentYear = new Date().getFullYear();
-  const sales_based_product_param={
+  let sales_based_product_param={
     from_timestamp:0,
     to_timestamp:99999999999,
     sort_by:"desc"
@@ -35,8 +35,11 @@ app.get('/', async(req, res) => {
   // ]);
   const {product_counts, orders_counts,customers_counts,sales_count}={product_counts:0,orders_counts:0,customers_counts:0,sales_count:0}
 
-  const sales_based_product=await getSalesBasedProductAPI(sales_based_product_param)
-  console.log(sales_based_product)
+  const sales_based_product_desc=await getSalesBasedProductAPI(sales_based_product_param)
+  sales_based_product_param['sort_by']="asc"
+
+  const sales_based_product_asc=await getSalesBasedProductAPI(sales_based_product_param)
+  console.log(sales_based_product_desc)
 
   let review_mapping={
     "1":0,
@@ -80,7 +83,7 @@ app.get('/', async(req, res) => {
 
 
 
-  res.render('dashboard', { product_counts,orders_counts,customers_counts,sales_count, getSafeValue,currentYear,sales_based_product,percentage_mapping });
+  res.render('dashboard', { product_counts,orders_counts,customers_counts,sales_count, getSafeValue,currentYear,sales_based_product_desc,percentage_mapping,sales_based_product_asc });
 });
 
 app.listen(PORT, () => {

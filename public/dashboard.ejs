@@ -2313,8 +2313,85 @@
               </div>
             </div>
             <div class="col-xxl-4 col-xl-7 col-lg-8 col-md-7">
-              <div class="card__wrapper">
-                <div class="mini__calendar" id="miniCalendar"></div>
+              <div class="card-bg card-border mb-20">
+                <div class="card__wrapper style_two">
+                  <div
+                    class="card__title-wrap d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="card__heading-title">Country Based Sales</h5>
+                    
+                    <div class="card__dropdown">
+                      <div class="dropdown">
+                        <button>
+                          <i class="fa-regular fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="dropdown-list">
+                          <a
+                            class="dropdown__item"
+                            href="javascript:void(0)"
+                            >Action</a
+                          >
+                          <a
+                            class="dropdown__item"
+                            href="javascript:void(0)"
+                            >More Action</a
+                          >
+                          <a
+                            class="dropdown__item"
+                            href="javascript:void(0)"
+                            >Another Action</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card__content">
+                    <div class="card__line-chart">
+                      <div id="treemapCharts2"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xxl-4 col-xl-7 col-lg-8 col-md-7">
+              <div class="card-bg card-border mb-20">
+                <div class="card__wrapper style_two">
+                  <div
+                    class="card__title-wrap d-flex align-items-center justify-content-between"
+                  >
+                    <h5 class="card__heading-title">Country Based Sales</h5>
+                    
+                    <div class="card__dropdown">
+                      <div class="dropdown">
+                        <button>
+                          <i class="fa-regular fa-ellipsis-vertical"></i>
+                        </button>
+                        <div class="dropdown-list">
+                          <a
+                            class="dropdown__item"
+                            href="javascript:void(0)"
+                            >Action</a
+                          >
+                          <a
+                            class="dropdown__item"
+                            href="javascript:void(0)"
+                            >More Action</a
+                          >
+                          <a
+                            class="dropdown__item"
+                            href="javascript:void(0)"
+                            >Another Action</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card__content">
+                    <div class="card__line-chart">
+                      <div id="treemapCharts2"></div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="col-xxl-5 col-xl-7 col-lg-6">
@@ -2588,7 +2665,52 @@
                       </tr>
                     </thead>
                     <tbody class="table__body">
-                      <% sales_based_product.forEach(product => { %>
+                      <% sales_based_product_desc.forEach(product => { %>
+                      <tr>
+                        <td class="tabel__meta">
+                          <div class="d-flex align-items-center gap-10">
+                            <div class="table-thumb">
+                              <img
+                                src="<%= product?.image %>"
+                                alt="image"
+                              />
+                            </div>
+                            <span class="table__meta-name"><%= product.product_name %></span>
+                          </div>
+                        </td>
+                        <td class="table__cat"><%= product.store_name %></td>
+
+                        <td class="table__cat">₹ <%= product.total_sold %></td>
+                        <td class="table__date"><%= product.date_created %></td>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xxl-8 col-xl-6 col-lg-12"></div>
+              <div class="card__wrapper height-equal">
+                <div
+                  class="card__title-wrap d-flex align-items-center justify-content-between mb-20"
+                >
+                  <h5 class="card__heading-title">Low Sold Porducts</h5>
+                  <div class="card__dropdown">
+                  </div>
+                </div>
+                <div class="card__table table-responsive">
+                  <table class="table table-bordered mb-0">
+                    <thead>
+                      <tr class="table__title">
+                        <th>Porduct Name</th>
+                        <th>Store Name</th>
+                        <th>Sold Revenue</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table__body">
+                      <% sales_based_product_asc.forEach(product => { %>
                       <tr>
                         <td class="tabel__meta">
                           <div class="d-flex align-items-center gap-10">
