@@ -21,4 +21,25 @@ const getAllCustomersApi = async (params, interval_type) => {
       return {}
     }
 }
-module.exports={getAllCustomersApi}
+
+const getCustomerReviewAPI=async()=>{
+  try{
+    
+    const queryString = new URLSearchParams({
+      to_timestamp: 9999999999,
+    }).toString();
+    
+    const customers_api = await fetch(`${API_URL}/get_customer_review?${queryString}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  
+    const customers_response = await customers_api.json();
+    return customers_response;
+  }
+  catch(err){
+    console.log(err)
+    return {}
+  }
+}
+module.exports={getAllCustomersApi,getCustomerReviewAPI}

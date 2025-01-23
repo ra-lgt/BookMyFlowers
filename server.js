@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const {getAllProductsAPI,getSalesBasedProductAPI}=require('./Products')
 const {getAllOrdersApi}=require('./Orders')
-const {getAllCustomersApi}=require('./Customers')
+const {getAllCustomersApi,getCustomerReviewAPI}=require('./Customers')
 const {getAllSalesApi}=require('./SalesService')
 const app = express();
 const PORT = 3000;
@@ -38,6 +38,33 @@ app.get('/', async(req, res) => {
   const sales_based_product=await getSalesBasedProductAPI(sales_based_product_param)
   console.log(sales_based_product)
 
+  let review_mapping={
+    "1":0,
+    "2":0,
+    "3":0,
+    "4":0,
+    "5":0
+  }
+
+  const get_customer_review=await getCustomerReviewAPI()
+
+  let total_reviews = 0;
+
+  get_customer_review?.forEach((value) => {
+    const rating = value?.[2];
+    if (rating) {
+      review_mapping[rating] += 1;
+      total_reviews += 1; // Increment total reviews while counting
+    }
+  });
+
+  // Calculate percentage mapping
+  let percentage_mapping = {};
+  for (let rating in review_mapping) {
+    percentage_mapping[rating] =
+      total_reviews > 0 ? ((review_mapping[rating] / total_reviews) * 100).toFixed(2) : 0;
+  }
+
   
 
   // product_counts['is_positive']=((product_counts?.data?.percentage_change)?.includes('+'))?true:false
@@ -53,7 +80,7 @@ app.get('/', async(req, res) => {
 
 
 
-  res.render('dashboard', { product_counts,orders_counts,customers_counts,sales_count, getSafeValue,currentYear,sales_based_product });
+  res.render('dashboard', { product_counts,orders_counts,customers_counts,sales_count, getSafeValue,currentYear,sales_based_product,percentage_mapping });
 });
 
 app.listen(PORT, () => {
