@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
-const {getAllProductsAPI,getSalesBasedProductAPI}=require('./Products')
-const {getAllOrdersApi}=require('./Orders')
+const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
+const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
 const {getAllCustomersApi,getCustomerReviewAPI}=require('./Customers')
 const {getAllSalesApi}=require('./SalesService')
 const app = express();
@@ -28,7 +28,7 @@ app.get('/', async(req, res) => {
 
   // const [product_counts, orders_counts,customers_counts,sales_count] = await Promise.all([
   //   // getAllProductsApi({ fields: "id" }, "count"),
-  //   // getAllOrdersApi({ fields: "id"}, "count"),
+  //   // getAllOrdersWeekAPI({ fields: "id"}, "count"),
   //   // getAllCustomersApi({fields:"id"}, "count"),
   //   // getAllSalesApi({ fields: "id"}, "count")
 
@@ -39,7 +39,6 @@ app.get('/', async(req, res) => {
   sales_based_product_param['sort_by']="asc"
 
   const sales_based_product_asc=await getSalesBasedProductAPI(sales_based_product_param)
-  console.log(sales_based_product_desc)
 
   let review_mapping={
     "1":0,
@@ -48,6 +47,7 @@ app.get('/', async(req, res) => {
     "4":0,
     "5":0
   }
+
 
   const get_customer_review=await getCustomerReviewAPI()
 
@@ -85,6 +85,41 @@ app.get('/', async(req, res) => {
 
   res.render('dashboard', { product_counts,orders_counts,customers_counts,sales_count, getSafeValue,currentYear,sales_based_product_desc,percentage_mapping,sales_based_product_asc });
 });
+
+app.get('/products', async(req, res) => {
+  const products = await getAllProductDetailsAPI({
+    "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating"
+  });
+  const total_products=products?.length || 0
+
+  const total_in_stock = products?.filter((product) => product.stock_status === 'instock')?.length || 0;
+
+  const total_out_of_stock = products?.filter((product) => product.stock_status === 'outofstock')?.length || 0;
+
+  const total_price=products?.reduce((acc, product) => acc + parseFloat(product.price), 0) || 0
+
+  console.log(products)
+  res.render('products',{total_products,total_in_stock,total_out_of_stock,total_price,products});
+})
+
+
+app.get('/orders', async(req, res) => {
+  const orders = await getAllOrdersAPI({
+    "included_keys": ['id,date_created', 'total', 'billing', 'status', 'payment_method_title', 'line_items', 'store']
+
+  });
+
+  const total_orders=orders?.length || 0
+
+  const total_sales = orders?.reduce((acc, order) => acc + parseFloat(order.total), 0) || 0;
+
+  const total_failed = orders?.filter((order) => order.status === 'failed')?.length || 0;
+
+  const total_completed = orders?.filter((order) => order.status === 'completed')?.length || 0;
+
+  res.render('orders',{total_orders,total_sales,total_failed,total_completed,orders});
+})
+
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);

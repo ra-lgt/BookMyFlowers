@@ -20,6 +20,26 @@ const getAllProductsAPI = async (params, interval_type) => {
 };
 
 
+const getAllProductDetailsAPI=async(included_keys)=>{
+  const payload={
+    product_id_list:[],
+    included_keys:included_keys
+  }
+
+  const get_all_products_api=await fetch(`${API_URL}/get_product_details_using_id`,{
+    method:'POST',
+    headers:{
+      'content-type':'application/json'
+    },
+    body:JSON.stringify(payload)
+  })
+
+  const get_all_products_res=await get_all_products_api.json()
+
+  return get_all_products_res
+}
+
+
 const getSalesBasedProductAPI=async(params)=>{
   try{
     const param = new URLSearchParams(
@@ -74,4 +94,4 @@ const getSalesBasedProductAPI=async(params)=>{
 
 
 
-module.exports = { getAllProductsAPI,getSalesBasedProductAPI };
+module.exports = { getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI };
