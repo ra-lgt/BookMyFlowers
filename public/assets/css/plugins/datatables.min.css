@@ -29,10 +29,10 @@ table.dataTable td.dt-control {
 table.dataTable td.dt-control:before {
   display: inline-block;
   color: rgba(0, 0, 0, 0.5);
-  content: "â–¶";
+  content: "▶";
 }
 table.dataTable tr.dt-hasChild td.dt-control:before {
-  content: "â–¼";
+  content: "▼";
 }
 html.dark table.dataTable td.dt-control:before {
   color: rgba(255, 255, 255, 0.5);
@@ -92,8 +92,8 @@ table.dataTable thead > tr > td.sorting_desc:before,
 table.dataTable thead > tr > td.sorting_asc_disabled:before,
 table.dataTable thead > tr > td.sorting_desc_disabled:before {
   bottom: 50%;
-  content: "â–²";
-  content: "â–²"/"";
+  content: "▲";
+  content: "▲"/"";
 }
 table.dataTable thead > tr > th.sorting:after,
 table.dataTable thead > tr > th.sorting_asc:after,
@@ -106,8 +106,8 @@ table.dataTable thead > tr > td.sorting_desc:after,
 table.dataTable thead > tr > td.sorting_asc_disabled:after,
 table.dataTable thead > tr > td.sorting_desc_disabled:after {
   top: 50%;
-  content: "â–¼";
-  content: "â–¼"/"";
+  content: "▼";
+  content: "▼"/"";
 }
 table.dataTable thead > tr > th.sorting_asc:before,
 table.dataTable thead > tr > th.sorting_desc:after,
