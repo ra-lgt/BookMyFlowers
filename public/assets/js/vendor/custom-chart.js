@@ -1,271 +1,5 @@
-(async function ($) {
-  const colors = [
-    "#3B93A5",
-    "#F7B844",
-    "#ADD8C7",
-    "#EC3C65",
-    "#CDD7B6",
-    "#C1F666",
-    "#D43F97",
-    "#1E5D8C",
-    "#421243",
-    "#7F94B0",
-    "#EF6537",
-    "#C0ADDB",
-  ];
-  let state_country_response={}
-  let year_order_stat={
-    month_interval: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-
-  }
-  let year_sales_stat = {
-    sales_data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    cart_data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    month_interval: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-  };
-  let month_sales_stat = {
-    sales_data:[0,0,0,0],
-    cart_data:[0,0,0,0],
-    month_days_interval:['1st week','2nd week','3rd week','4th week']
-  };
-  let week_sales_stat = {
-    sales_data: [0, 0, 0, 0, 0, 0, 0],
-    cart_data: [0, 0, 0, 0, 0, 0, 0],
-    day_interval: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-  };
-  function createYearTimestamps(offset) {
-    const now = new Date();
-
-    const targetYear = now.getFullYear() - offset;
-
-    const startTimestamp = new Date(targetYear, 0, 1, 0, 0, 0).getTime() / 1000;
-
-    const endTimestamp = new Date(targetYear, 11, 31, 23, 59, 59).getTime() / 1000;
-
-    return {
-        startTimestamp,
-        endTimestamp
-    };
-}
-
-
-  async function getCategoryBasedSalesApi() {
-    const get_all_category_based_sales = await fetch(
-      "http://127.0.0.1:8000/get_all_category_based_sales"
-    );
-
-    const get_all_category_based_sales_res =
-      await get_all_category_based_sales.json();
-
-    return get_all_category_based_sales_res;
-  }
-
-  async function getCartSalesStatApi(interval_type = "year") {
-    let to_timestamp = undefined;
-    let from_timestamp = undefined;
-
-    const currentDate = new Date();
-
-    if (interval_type == "week") {
-      const startOfWeek = new Date(currentDate);
-      startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
-      startOfWeek.setHours(0, 0, 0, 0);
-
-      const endOfWeek = new Date(startOfWeek);
-      endOfWeek.setDate(startOfWeek.getDate() + 6);
-      endOfWeek.setHours(23, 59, 59, 999);
-
-      from_timestamp = Math.floor(startOfWeek.getTime() / 1000);
-      to_timestamp = Math.floor(endOfWeek.getTime() / 1000);
-    } else if (interval_type == "month") {
-      const startOfMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth(),
-        1
-      );
-      startOfMonth.setHours(0, 0, 0, 0);
-
-      const endOfMonth = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + 1,
-        0
-      );
-      endOfMonth.setHours(23, 59, 59, 999);
-
-      from_timestamp = Math.floor(startOfMonth.getTime() / 1000);
-      to_timestamp = Math.floor(endOfMonth.getTime() / 1000);
-    } else if (interval_type == "year") {
-      const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
-      startOfYear.setHours(0, 0, 0, 0);
-
-      const endOfYear = new Date(currentDate.getFullYear(), 11, 31);
-      endOfYear.setHours(23, 59, 59, 999);
-
-      from_timestamp = Math.floor(startOfYear.getTime() / 1000);
-      to_timestamp = Math.floor(endOfYear.getTime() / 1000);
-    }
-
-    const params = new URLSearchParams({
-      from_timestamp: from_timestamp,
-      to_timestamp: to_timestamp,
-    }).toString();
-
-    const get_cart_sales_stat = await fetch(
-      `http://127.0.0.1:8000/get_cart_and_sales?${params}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    const get_cart_sales_stat_res = await get_cart_sales_stat.json();
-
-    return get_cart_sales_stat_res;
-  }
-
-  async function getOrderOverviewStat(startTimestamp,endTimestamp){
-    const params = new URLSearchParams({
-      from_timestamp:startTimestamp,
-      to_timestamp:endTimestamp
-    }).toString();
-
-    const get_order_overview_stat = await fetch(
-      `http://127.0.0.1:8000/get_sales_and_revenue_stat?${params}`
-    )
-
-    const get_order_overview_stat_res=await get_order_overview_stat.json();
-    return get_order_overview_stat_res;
-    
-  }
-
-  async function getStateandCountryRevenue(startTimestamp,endTimestamp) {
-
-    const params = new URLSearchParams({
-      from_timestamp: startTimestamp,
-      to_timestamp: endTimestamp,
-    }).toString();
-
-    const get_state_country_sales_api = await fetch(
-      `http://127.0.0.1:8000/get_sales_based_on_country_stats?${params}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    const get_state_country_sales_res = await get_state_country_sales_api.json();
-
-    console.log("get_state_country_sales_res",get_state_country_sales_res)
-
-    return get_state_country_sales_res
-    
-  }
-
-  // const all_category = await getCategoryBasedSalesApi();
-  let all_category={}
-  const all_category_keys = Object.keys(all_category);
-  const all_category_values = Object.values(all_category);
-
-  document.getElementById("product_name").innerHTML =
-    all_category_keys[
-      all_category_values.indexOf(Math.max(...all_category_values))
-    ];
-  document.getElementById("product_price").innerHTML =
-    "₹" + " " + Math.max(...all_category_values).toFixed(2);
-  const results = await Promise.all(
-
-    ["year", "month", "week"].map(async (interval_type, key) => {
-      // cart_sales_stat = await getCartSalesStatApi(interval_type);
-      const cart_sales_stat = {cart_data:[],sales_data:[]}
-
-      const { cart_data, sales_data } = cart_sales_stat;
-      cart_data.map((value, key) => {
-        let date = undefined;
-        if (interval_type == "year") {
-          date = new Date(value?.timestamp);
-          year_sales_stat["cart_data"][date.getMonth()] += value?.product_count;
-        } else if (interval_type == "week") {
-          date = new Date(value?.timestamp);
-          week_sales_stat["cart_data"][date.getDay()] += value?.product_count;
-        }
-        else{
-          date = new Date(value?.timestamp);
-          month_sales_stat["cart_data"][Math.floor(date.getDate() / 7)] += value?.product_count;
-        }
-      });
-
-      sales_data.map((value, key) => {
-        let date = undefined;
-        if (interval_type == "year") {
-          date = new Date(value?.date_created);
-          year_sales_stat["sales_data"][date.getMonth()] +=
-            value?.products_id.length;
-        } else if (interval_type == "week") {
-          date = new Date(value?.timestamp);
-          week_sales_stat["sales_data"][date.getDay()] += value?.product_count;
-        }
-        else{
-          date = new Date(value?.date_created);
-          month_sales_stat["sales_data"][Math.floor(date.getDate() / 7)] += value?.products_id.length;
-        }
-      });
-    })
-  );
-
-  await Promise.all(
-    [0,1,2].map(async (offset,index)=>{
-      year_order_stat[index]={
-        'sales':[0,0,0,0,0,0,0,0,0,0,0,0],
-       'revenue':[0,0,0,0,0,0,0,0,0,0,0,0]
-      }
-
-      
-      const {startTimestamp,endTimestamp}=createYearTimestamps(offset)
-      const  response=await getOrderOverviewStat(startTimestamp,endTimestamp)
-      if(offset==0){
-
-        state_country_response=await getStateandCountryRevenue(startTimestamp,endTimestamp)
-      }
-
-      const interval=response?.intervals
-
-      interval.map((value,key)=>{
-        const month=value?.interval.split('-')[1]
-        year_order_stat[index]['revenue'][parseInt(month)-1]+=parseFloat(value?.subtotals?.net_revenue)
-        year_order_stat[index]['sales'][parseInt(month)-1]+=parseFloat(value?.subtotals?.total_sales)
-      })
-      
-
-    })
-  )
-
-
+(function ($) {
+  "use strict";
   var windowOn = $(window);
 
   /* working hour chart */
@@ -534,12 +268,12 @@
     var options = {
       series: [
         {
-          name: "user_cart",
-          data: week_sales_stat?.cart_data,
+          name: "sale",
+          data: [35, 45, 28, 61, 62, 80, 90],
         },
         {
-          name: "sales",
-          data: week_sales_stat?.sales_data,
+          name: "series2",
+          data: [25, 32, 35, 55, 50, 70, 101],
         },
       ],
       chart: {
@@ -569,7 +303,7 @@
         borderColor: "#E6E6E6",
       },
       xaxis: {
-        categories: week_sales_stat?.day_interval,
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
         labels: {
           style: {
             colors: "var(--clr-chart-1)",
@@ -611,12 +345,12 @@
     var options = {
       series: [
         {
-          name: "user_cart",
-          data: month_sales_stat?.cart_data,
+          name: "sale",
+          data: [35, 45, 28, 61, 62, 80, 90],
         },
         {
-          name: "sales",
-          data: month_sales_stat?.sales_data,
+          name: "series2",
+          data: [25, 32, 35, 55, 50, 70, 101],
         },
       ],
       chart: {
@@ -646,7 +380,7 @@
         borderColor: "#E6E6E6",
       },
       xaxis: {
-        categories: month_sales_stat?.month_days_interval,
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
         labels: {
           style: {
             colors: "var(--clr-chart-1)",
@@ -662,7 +396,7 @@
         labels: {
           offsetX: -10,
           formatter: function (value) {
-            return value;
+            return value + "k";
           },
           style: {
             colors: "var(--clr-chart-1)",
@@ -688,15 +422,16 @@
     var options = {
       series: [
         {
-          name: "user_cart",
-          data: year_sales_stat?.cart_data,
+          name: "sale",
+          data: [50, 40, 38, 61, 82, 109, 100],
         },
         {
-          name: "sales",
-          data: year_sales_stat?.sales_data,
+          name: "series2",
+          data: [40, 50, 65, 32, 70, 90, 80],
         },
       ],
       chart: {
+        height: 283,
         offsetX: 0,
         type: "area",
         // offsetY: 2,
@@ -722,7 +457,7 @@
         borderColor: "#E6E6E6",
       },
       xaxis: {
-        categories: year_sales_stat?.month_interval,
+        categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
         labels: {
           style: {
             colors: "var(--clr-chart-1)",
@@ -738,7 +473,7 @@
         labels: {
           offsetX: -10,
           formatter: function (value) {
-            return value + " " + "products";
+            return value + "k";
           },
           style: {
             colors: "var(--clr-chart-1)",
@@ -762,8 +497,8 @@
   /* Pie Chart */
   if (jQuery("#pieChartAud").length > 0) {
     var options = {
-      series: all_category_values,
-      labels: all_category_keys,
+      series: [25, 75],
+      labels: ["Subscriber", "New User"],
       chart: {
         type: "donut",
         width: "100%",
@@ -776,14 +511,14 @@
       },
       plotOptions: {
         pie: {
-          size: 250,
+          size: 150,
           donut: {
             position: "center",
             labels: {
               show: true,
               name: {
                 show: true,
-                fontSize: "14px",
+                fontSize: "18px",
                 color: "var(--clr-action-success)",
                 offsetY: 5,
               },
@@ -816,7 +551,7 @@
         enabled: true,
         y: {
           formatter: function (val) {
-            return "₹" + " " + val;
+            return val + "" + "%";
           },
           color: "var(--clr-action-success)",
         },
@@ -837,96 +572,267 @@
     chart.render();
   }
   /* Sales Chart Weekly */
-  [0,1,2].map((value,key)=>{
-    if (jQuery(`#chart_${value}`).length > 0) {
-      var options = {
-        series: [
-          {
-            name: "Sales",
-            data: year_order_stat[value]['sales'],
-          },
-          {
-            name: "Profit",
-            data: year_order_stat[value]['revenue'],
-          },
-        ],
-        chart: {
-          type: "bar",
-          height: 315,
-          toolbar: {
-            show: true,
-            offsetX: 0,
-            offsetY: 0,
-          },
+  if (jQuery("#salesChartWeek").length > 0) {
+    var options = {
+      series: [
+        {
+          name: "Sale",
+          data: [76, 85, 101, 98, 87, 105, 91],
         },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: "55%",
-            endingShape: "rounded",
-          },
+        {
+          name: "Profit",
+          data: [44, 55, 57, 56, 61, 58, 63],
         },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["var(--clr-theme-primary)", "var(--clr-theme-secondary)"],
-        stroke: {
+      ],
+      chart: {
+        type: "bar",
+        height: 315,
+        toolbar: {
           show: true,
-          width: 2,
-          colors: ["transparent"],
+          offsetX: 0,
+          offsetY: 0,
         },
-        legend: {
-          show: true,
-          labels: {
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      colors: ["var(--clr-theme-primary)", "var(--clr-theme-secondary)"],
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+      },
+      legend: {
+        show: true,
+        labels: {
+          colors: "var(--clr-chart-1)",
+          fontSize: "12px",
+          fontFamily: "var(--bd-fs-body)",
+        },
+      },
+      xaxis: {
+        categories: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+        labels: {
+          style: {
             colors: "var(--clr-chart-1)",
             fontSize: "12px",
             fontFamily: "var(--bd-fs-body)",
+            fontWeight: 400,
+            cssClass: "apexcharts-xaxis-label",
           },
         },
-        xaxis: {
-          categories: year_order_stat?.month_interval,
-          labels: {
-            style: {
-              colors: "var(--clr-chart-1)",
-              fontSize: "12px",
-              fontFamily: "var(--bd-fs-body)",
-              fontWeight: 400,
-              cssClass: "apexcharts-xaxis-label",
-            },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: "var(--clr-chart-1)",
+            fontSize: "12px",
+            fontFamily: "var(--bd-fs-body)",
+            fontWeight: 400,
+            cssClass: "apexcharts-xaxis-label",
           },
         },
-        yaxis: {
-          labels: {
-            style: {
-              colors: "var(--clr-chart-1)",
-              fontSize: "12px",
-              fontFamily: "var(--bd-fs-body)",
-              fontWeight: 400,
-              cssClass: "apexcharts-xaxis-label",
-            },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands";
           },
         },
-        fill: {
-          opacity: 1,
+      },
+    };
+    var chart = new ApexCharts(
+      document.querySelector("#salesChartWeek"),
+      options
+    );
+    chart.render();
+  }
+  /* Sales Chart Monthly */
+  if (jQuery("#salesChartMonthly").length > 0) {
+    var options = {
+      series: [
+        {
+          name: "Sale",
+          data: [76, 85, 101, 98, 87, 105, 91],
         },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "₹ " + val ;
-            },
+        {
+          name: "Profit",
+          data: [44, 55, 57, 56, 61, 58, 63],
+        },
+      ],
+      chart: {
+        type: "bar",
+        height: 315,
+        width: 620,
+        offsetX: -20,
+        toolbar: {
+          show: true,
+          offsetX: -22,
+          offsetY: 0,
+        },
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      colors: ["var(--clr-theme-primary)", "var(--clr-theme-secondary)"],
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+      },
+      legend: {
+        show: true,
+        labels: {
+          colors: "var(--clr-chart-1)",
+          fontSize: "12px",
+          fontFamily: "var(--bd-fs-body)",
+        },
+      },
+      xaxis: {
+        categories: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+        labels: {
+          style: {
+            colors: "var(--clr-chart-1)",
+            fontSize: "12px",
+            fontFamily: "var(--bd-fs-body)",
+            fontWeight: 400,
+            cssClass: "apexcharts-xaxis-label",
           },
         },
-      };
-      var chart = new ApexCharts(
-        document.querySelector(`#chart_${value}`),
-        options
-      );
-      chart.render();
-    }
-
-  })
-  
-
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: "var(--clr-chart-1)",
+            fontSize: "12px",
+            fontFamily: "var(--bd-fs-body)",
+            fontWeight: 400,
+            cssClass: "apexcharts-xaxis-label",
+          },
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands";
+          },
+        },
+      },
+    };
+    var chart = new ApexCharts(
+      document.querySelector("#salesChartMonthly"),
+      options
+    );
+    chart.render();
+  }
+  /* Sales Chart Yearly */
+  if (jQuery("#salesChartYearly").length > 0) {
+    var options = {
+      series: [
+        {
+          name: "Sale",
+          data: [76, 85, 101, 98, 87, 105, 91],
+        },
+        {
+          name: "Profit",
+          data: [44, 55, 57, 56, 61, 58, 63],
+        },
+      ],
+      chart: {
+        type: "bar",
+        height: 315,
+        width: 620,
+        offsetX: -20,
+        toolbar: {
+          show: true,
+          offsetX: -22,
+          offsetY: 0,
+        },
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          endingShape: "rounded",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      colors: ["var(--clr-theme-primary)", "var(--clr-theme-secondary)"],
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+      },
+      legend: {
+        show: true,
+        labels: {
+          colors: "var(--clr-chart-1)",
+          fontSize: "12px",
+          fontFamily: "var(--bd-fs-body)",
+        },
+      },
+      xaxis: {
+        categories: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
+        labels: {
+          style: {
+            colors: "var(--clr-chart-1)",
+            fontSize: "12px",
+            fontFamily: "var(--bd-fs-body)",
+            fontWeight: 400,
+            cssClass: "apexcharts-xaxis-label",
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: "var(--clr-chart-1)",
+            fontSize: "12px",
+            fontFamily: "var(--bd-fs-body)",
+            fontWeight: 400,
+            cssClass: "apexcharts-xaxis-label",
+          },
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands";
+          },
+        },
+      },
+    };
+    var chart = new ApexCharts(
+      document.querySelector("#salesChartYearly"),
+      options
+    );
+    chart.render();
+  }
   /* Revenue Chart */
   if (jQuery("#revenueChartWeek2").length > 0) {
     var options = {
@@ -7054,15 +6960,148 @@
     chart.render();
   }
   /* treemapCharts */
+  if (jQuery("#treemapCharts").length > 0) {
+    var options = {
+      series: [
+        {
+          data: [
+            {
+              x: "New Delhi",
+              y: 218,
+            },
+            {
+              x: "Kolkata",
+              y: 149,
+            },
+            {
+              x: "Mumbai",
+              y: 184,
+            },
+            {
+              x: "Ahmedabad",
+              y: 55,
+            },
+            {
+              x: "Bangaluru",
+              y: 84,
+            },
+            {
+              x: "Pune",
+              y: 31,
+            },
+            {
+              x: "Chennai",
+              y: 70,
+            },
+            {
+              x: "Jaipur",
+              y: 30,
+            },
+            {
+              x: "Surat",
+              y: 44,
+            },
+            {
+              x: "Hyderabad",
+              y: 68,
+            },
+            {
+              x: "Lucknow",
+              y: 28,
+            },
+            {
+              x: "Indore",
+              y: 19,
+            },
+            {
+              x: "Kanpur",
+              y: 29,
+            },
+          ],
+        },
+      ],
+      legend: {
+        show: true,
+        labels: {
+          colors: "var(--clr-chart-1)",
+          fontSize: "12px",
+          fontFamily: "var(--bd-fs-body)",
+        },
+      },
+      chart: {
+        height: 350,
+        type: "treemap",
 
+        toolbar: {
+          show: true,
+        },
+      },
+    };
+
+    var chart = new ApexCharts(
+      document.querySelector("#treemapCharts"),
+      options
+    );
+    chart.render();
+  }
   if (jQuery("#treemapCharts2").length > 0) {
     var options = {
       series: [
         {
-          data: Object.entries(state_country_response?.country_sales).map(([key, value]) => ({
-            x: key, // Country code
-            y: value, // Value
-          })),
+          data: [
+            {
+              x: "New Delhi",
+              y: 218,
+            },
+            {
+              x: "Kolkata",
+              y: 149,
+            },
+            {
+              x: "Mumbai",
+              y: 184,
+            },
+            {
+              x: "Ahmedabad",
+              y: 55,
+            },
+            {
+              x: "Bangaluru",
+              y: 84,
+            },
+            {
+              x: "Pune",
+              y: 31,
+            },
+            {
+              x: "Chennai",
+              y: 70,
+            },
+            {
+              x: "Jaipur",
+              y: 30,
+            },
+            {
+              x: "Surat",
+              y: 44,
+            },
+            {
+              x: "Hyderabad",
+              y: 68,
+            },
+            {
+              x: "Lucknow",
+              y: 28,
+            },
+            {
+              x: "Indore",
+              y: 19,
+            },
+            {
+              x: "Kanpur",
+              y: 29,
+            },
+          ],
         },
       ],
       legend: {
@@ -7080,9 +7119,20 @@
           show: true,
         },
       },
-      colors: Object.entries(state_country_response?.country_sales).map(
-        () => colors[Math.floor(Math.random() * colors.length)]
-      ),
+      colors: [
+        "#3B93A5",
+        "#F7B844",
+        "#ADD8C7",
+        "#EC3C65",
+        "#CDD7B6",
+        "#C1F666",
+        "#D43F97",
+        "#1E5D8C",
+        "#421243",
+        "#7F94B0",
+        "#EF6537",
+        "#C0ADDB",
+      ],
       plotOptions: {
         treemap: {
           distributed: true,
