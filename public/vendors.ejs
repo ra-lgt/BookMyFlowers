@@ -1133,9 +1133,9 @@
                                     <span><i class="fa-light fa-ban"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Orders</h6>
+                                    <h6 class="card__sub-title mb-10">Total Vendors</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= total_orders %></h3>
+                                        <h3 class="card__title"><%= totalVendors %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1148,9 +1148,9 @@
                                     <span><i class="fa-light fa-badge-check"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Sales</h6>
+                                    <h6 class="card__sub-title mb-10">Total Featured Vendors</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title">₹ <%= total_sales %></h3>
+                                        <h3 class="card__title"> <%= featuredVendors %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1163,9 +1163,9 @@
                                     <span><i class="fa-sharp fa-regular fa-user"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Completed Orders </h6>
+                                    <h6 class="card__sub-title mb-10">Total Trusted Vendors </h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= total_completed %></h3>
+                                        <h3 class="card__title"><%= trustedVendors %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1178,9 +1178,9 @@
                                     <span><i class="fa-sharp fa-regular fa-house-person-leave"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Failed Orders</h6>
+                                    <h6 class="card__sub-title mb-10">Average Rating</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= total_failed %></h3>
+                                        <h3 class="card__title"><%= averageRating %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1194,76 +1194,57 @@
                                         <tr class="table__title table__sort">
 
                                             <th>ID</th>
-                                            <th>Date Created</th>
-                                            <th>Price</th>
-                                            <th>Payment Method</th>
-                                            <th>Status</th>
-                                            <th>Customer Name</th>
-                                            <th>Customer Email</th>
-                                            <th>Shop Owner Name</th>
-                                            <th>Shop Name</th>
-                                            <th>Details</th>
+                                            <th>Date registered</th>
+                                            <th>Name</th>
+                                            <th>Rating</th>
+                                            <th>IsTrusted</th>
+                                            <th>IsFeatured</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table__body">
-                                        <% orders.forEach((item)=>{ %>
+                                        <% vendors.forEach((item)=>{ %>
                                             <tr>
                                                 <td><%= item?.id %></td>
-                                                <td><%= item?.date_created %></td>
-                                                <td>₹ <%= item?.total %></td>
-                                                <td><%= item?.payment_method_title %></td>
+                                                <td><%= item?.registered %></td>
                                                 <td>
-                                                  <% if (item?.status === 'completed') { %>
-                                                    <span class="bd-badge bg-success"><%= item?.status %></span>
-                                                  <% } else if (item?.status === 'pending') { %>
-                                                    <span class="bd-badge bg-warning"><%= item?.status %></span>
-                                                  <% } else if (item?.status === 'cancelled') { %>
-                                                    <span class="bd-badge bg-danger"><%= item?.status %></span>
-                                                  <% } else if (item?.status === 'on-hold') { %>
-                                                    <span class="bd-badge bg-secondary"><%= item?.status %></span>
-                                                  <% } else { %>
-                                                    <span class="bd-badge bg-secondary">Unknown</span>
+                                                    <span class="table-avatar d-flex align-items-center">
+                                                        <a href="#" class="company__thumb"><img
+                                                                src="<%= item?.gravatar %>" alt="image"></a>
+                                                                <%= item?.first_name + item?.last_name %>
+                                                    </span>
+                                                </td>
+                                                    
+                                                <td><%= item?.rating?.rating %><span class="company__rating"><i
+                                                    class="fa-sharp fa-solid fa-star"></i></span></td>
+                                                <td>
+                                                  <% if (item?.trusted === true) { %>
+                                                    <span class="bd-badge bg-success"><%= item?.trusted %></span>
+                                                  <% } else if (item?.trusted === false) { %>
+                                                    <span class="bd-badge bg-danger"><%= item?.trusted %></span>
+                                                <% } %>
+
+                                                </td>
+                                                <td>
+                                                    <% if (item?.featured === true) { %>
+                                                      <span class="bd-badge bg-success"><%= item?.featured %></span>
+                                                    <% } else if (item?.featured === false) { %>
+                                                      <span class="bd-badge bg-danger"><%= item?.featured %></span>
                                                   <% } %>
+  
+                                               
                                                 </td>
-                                                <td><%= item?.billing?.first_name + " " + item?.billing?.last_name %></td>
-                                                <td><%= item?.billing?.email %></td>
-                                                <td><%= item?.store?.name %></td>
-                                                <td><%= item?.store?.shop_name %></td>
                                                 <td>
-                                                  <div class="accordion" id="accordionItem<%= item?.id %>">
-                                                    <div class="accordion-item">
-                                                      <h2 class="accordion-header" id="heading<%= item?.id %>">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= item?.id %>" aria-expanded="false" aria-controls="collapse<%= item?.id %>">
-                                                          Details
+                                                    <div class="d-flex align-items-center justify-content-start gap-10">
+                                                        <a href="tickets-reply.html" class="table__icon reply">
+                                                            <i class="fa-sharp fa-light fa-reply"></i>
+                                                        </a>
+                                                        <button class="removeBtn table__icon delete">
+                                                            <i class="fa-regular fa-trash"></i>
                                                         </button>
-                                                      </h2>
-                                                      <div id="collapse<%= item?.id %>" class="accordion-collapse collapse" aria-labelledby="heading<%= item?.id %>" data-bs-parent="#accordionItem<%= item?.id %>">
-                                                        <div class="accordion-body">
-                                                            <div class="table__wrapper table-responsive">
-                                                                <table class="table mb-20">
-                                                                <thead>
-                                                                    <tr class="table__title table__sort">
-                                                                    <th>Product Name</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Price</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody class="table__body">
-                                                                    <% item?.line_items.forEach((product)=>{ %>
-                                                                    <tr>
-                                                                        <td><%= product?.name %></td>
-                                                                        <td><%= product?.quantity %></td>
-                                                                        <td>₹ <%= product?.total %></td>
-                                                                    </tr>
-                                                                    <% }) %>
-                                                                </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                      </div>
                                                     </div>
-                                                  </div>
                                                 </td>
+                                                  
                                               </tr>
                                               
                                         <% }) %>

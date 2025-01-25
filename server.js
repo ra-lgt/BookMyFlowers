@@ -3,7 +3,7 @@ const path = require('path');
 const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
 const {getAllCustomersApi,getCustomerReviewAPI}=require('./Customers')
-const {getAllSalesApi}=require('./SalesService')
+const {getAllSalesApi,getAllVendorsAPI}=require('./SalesService')
 const app = express();
 const PORT = 3000;
 
@@ -26,14 +26,13 @@ app.get('/', async(req, res) => {
     sort_by:"desc"
   }
 
-  // const [product_counts, orders_counts,customers_counts,sales_count] = await Promise.all([
-  //   // getAllProductsApi({ fields: "id" }, "count"),
-  //   // getAllOrdersWeekAPI({ fields: "id"}, "count"),
-  //   // getAllCustomersApi({fields:"id"}, "count"),
-  //   // getAllSalesApi({ fields: "id"}, "count")
+  const [product_counts, orders_counts,customers_counts,sales_count] = await Promise.all([
+    getAllProductsAPI({ fields: "id" }, "count"),
+    getAllOrdersWeekAPI({ fields: "id"}, "count"),
+    getAllCustomersApi({fields:"id"}, "count"),
+    getAllSalesApi({ fields: "id"}, "count")
 
-  // ]);
-  const {product_counts, orders_counts,customers_counts,sales_count}={product_counts:0,orders_counts:0,customers_counts:0,sales_count:0}
+  ]);
 
   const sales_based_product_desc=await getSalesBasedProductAPI(sales_based_product_param)
   sales_based_product_param['sort_by']="asc"
@@ -70,13 +69,13 @@ app.get('/', async(req, res) => {
 
   
 
-  // product_counts['is_positive']=((product_counts?.data?.percentage_change)?.includes('+'))?true:false
+  product_counts['is_positive']=((product_counts?.data?.percentage_change)?.includes('+'))?true:false
   
-  // orders_counts['is_positive']=((orders_counts?.data?.percentage_change)?.includes('+'))?true:false
+  orders_counts['is_positive']=((orders_counts?.data?.percentage_change)?.includes('+'))?true:false
 
-  // customers_counts['is_positive']=((customers_counts?.data?.percentage_change)?.includes('+'))?true:false
+  customers_counts['is_positive']=((customers_counts?.data?.percentage_change)?.includes('+'))?true:false
 
-  // sales_count['is_positive']=((sales_count?.data?.percentage_change)?.includes('+'))?true:false
+  sales_count['is_positive']=((sales_count?.data?.percentage_change)?.includes('+'))?true:false
 
   
 
@@ -105,7 +104,7 @@ app.get('/products', async(req, res) => {
 
 app.get('/orders', async(req, res) => {
   const orders = await getAllOrdersAPI({
-    "included_keys": ['id,date_created', 'total', 'billing', 'status', 'payment_method_title', 'line_items', 'store']
+    "included_keys": ['id','date_created', 'total', 'billing', 'status', 'payment_method_title', 'line_items', 'store']
 
   });
 
@@ -118,6 +117,28 @@ app.get('/orders', async(req, res) => {
   const total_completed = orders?.filter((order) => order.status === 'completed')?.length || 0;
 
   res.render('orders',{total_orders,total_sales,total_failed,total_completed,orders});
+})
+
+
+
+app.get('/vendors',async(req,res)=>{
+  const vendors=await getAllVendorsAPI()
+
+  const totalVendors = vendors.length;
+
+  const averageRating = (
+    vendors.reduce((sum, vendor) => sum + parseFloat(vendor.rating.rating), 0) / totalVendors
+  ).toFixed(2);
+
+  const trustedVendors = vendors.filter(vendor => vendor.trusted).length;
+
+  const featuredVendors = vendors.filter(vendor => vendor.featured).length;
+
+
+  res.render('vendors',{vendors,totalVendors,averageRating,featuredVendors,trustedVendors})
+
+
+
 })
 
 

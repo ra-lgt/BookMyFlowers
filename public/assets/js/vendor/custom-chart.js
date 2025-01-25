@@ -187,8 +187,7 @@
     
   }
 
-  // const all_category = await getCategoryBasedSalesApi();
-  let all_category={}
+  const all_category = await getCategoryBasedSalesApi();
   const all_category_keys = Object.keys(all_category);
   const all_category_values = Object.values(all_category);
 
@@ -201,8 +200,7 @@
   const results = await Promise.all(
 
     ["year", "month", "week"].map(async (interval_type, key) => {
-      // cart_sales_stat = await getCartSalesStatApi(interval_type);
-      const cart_sales_stat = {cart_data:[],sales_data:[]}
+      const cart_sales_stat = await getCartSalesStatApi(interval_type);
 
       const { cart_data, sales_data } = cart_sales_stat;
       cart_data.map((value, key) => {

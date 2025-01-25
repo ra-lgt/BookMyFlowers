@@ -2,27 +2,30 @@ const { API_URL } = require("./Config");
 
 const getAllProductsAPI = async (params, interval_type) => {
   try {
-    const products_api = await fetch(`${API_URL}/get_all_products`, {
-      method: "POST",
+    const queryParams = new URLSearchParams({
+      params: JSON.stringify(params), 
+      interval_type: interval_type,
+    }).toString();
+
+    // Fetch data with GET method
+    const products_api = await fetch(`${API_URL}/get_all_products?${queryParams}`, {
+      method: "GET",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        params: params,
-        interval_type: interval_type,
-      }),
     });
 
     const products_response = await products_api.json();
     return products_response;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return {};
   }
 };
 
 
-const getAllProductDetailsAPI=async(included_keys)=>{
+
+const getAllProductDetailsAPI=async(included_keys,product_id_list=[])=>{
   const payload={
-    product_id_list:[],
+    product_id_list:product_id_list,
     included_keys:included_keys
   }
 
@@ -53,15 +56,8 @@ const getSalesBasedProductAPI=async(params)=>{
     let product_lists = get_products_res?.map((value) => value?.product_id) || [];
 
 
-    const get_product_details=await fetch(`${API_URL}/get_product_details_using_id`,{
-      method:'POST',
-      headers:{
-        'content-type':'application/json'
-      },
-      body:JSON.stringify(product_lists)
-    })
 
-    const get_product_details_res=await get_product_details.json()
+    const get_product_details_res=await getAllProductDetailsAPI({},product_lists)
 
     const merge_details=get_products_res.map(item1=>{
       const item2 = get_product_details_res.find(item => item.id == item1.product_id);
