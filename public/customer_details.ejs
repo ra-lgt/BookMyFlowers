@@ -2012,18 +2012,16 @@
                     alt="image"
                   />
                   <div class="project__details-title">
-                    <h4 class="mb-8">Laravel Education App Development</h4>
+                    <h4 class="mb-8"> <%= customer_details?.customer_details?.[0]?.username %></h4>
                     <div
                       class="project__details-meta d-flex flex-wrap align-items-center g-5"
                     >
-                      <span class="d-block">Bdevs Limited</span>
+                      <span class="d-block"><%= customer_details?.customer_details?.[0]?.email %></span>
                       <span class="d-block"
-                        ><span class="fw-600">Create Date:</span> May 16,
-                        2024</span
+                        ><span class="fw-600">Registered Date:</span> <%= customer_details?.customer_details?.[0]?.date_registered %></span
                       >
                       <span class="d-block"
-                        ><span class="fw-600">Deadline:</span> Aug 15,
-                        2025</span
+                        ><span class="fw-600">Last Active:</span> <%= customer_details?.customer_details?.[0]?.date_last_active %> </span
                       >
                     </div>
                   </div>
@@ -2031,70 +2029,36 @@
               </div>
               <div class="card__wrapper">
                 <div class="card__title-wrap mb-25">
-                  <h5 class="card__heading-title">Summary</h5>
+                  <h5 class="card__heading-title">Customer Details</h5>
                 </div>
-                <p>
-                  This project involves the development of an education
-                  application using the Laravel framework. The app aims to
-                  provide comprehensive features for students and educators,
-                  including course management, student assessments, and
-                  real-time communication.
-                </p>
-                <p>
-                  The application will leverage Laravel's robust MVC
-                  architecture to ensure a scalable and maintainable codebase.
-                  Key features will include user authentication, course content
-                  management, interactive forums, and analytics for tracking
-                  student progress.
-                </p>
-
-                <p>
-                  The development process will follow agile methodologies to
-                  ensure regular updates and feature enhancements based on user
-                  feedback. A dedicated team will work on front-end and back-end
-                  development to deliver a seamless user experience.<span
-                    id="dots"
-                    >...</span
-                  ><span id="more">
-                    The project is scheduled to undergo multiple phases,
-                    including initial development, testing, deployment, and
-                    post-launch support. Each phase will be documented and
-                    reviewed to maintain high-quality standards.</span
-                  >
-                </p>
-                <button
-                  class="read__more-btn mb-15"
-                  onclick="myFunction()"
-                  id="myBtn"
-                >
-                  Read more
-                </button>
+              
                 <div class="list__dot mb-15">
                   <ul>
                     <li>
-                      Course management system with content upload capabilities.
+                      First Name : <%= customer_details?.customer_details?.[0]?.first_name %>
                     </li>
                     <li>
-                      Real-time communication tools for students and teachers.
+                      Last Name : <%= customer_details?.customer_details?.[0]?.last_name %>
                     </li>
                     <li>
-                      Secure user authentication and role-based access control.
+                      Country  : <%= customer_details?.customer_details?.[0]?.country %>
                     </li>
-                    <li>Interactive forums for peer-to-peer learning.</li>
-                    <li>Detailed analytics and reporting features.</li>
+                    <li>State  : <%= customer_details?.customer_details?.[0]?.state %></li>
+                    <li>City  : <%= customer_details?.customer_details?.[0]?.city %></li>
+                    <li>PostCode  : <%= customer_details?.customer_details?.[0]?.postcode %></li>
                   </ul>
                 </div>
                 <div class="row gy-3 mb-15">
                   <div class="col-lg-3 col-sm-6">
                     <div>
-                      <p class="mb-5 fw-medium">Create Date:</p>
-                      <h5 class="fs-15 mb-0">May 16, 2024</h5>
+                      <p class="mb-5 fw-medium">Registered Date:</p>
+                      <h5 class="fs-15 mb-0"><%= customer_details?.customer_details?.[0]?.date_registered %></h5>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-6">
                     <div>
-                      <p class="mb-5 fw-medium">Deadline:</p>
-                      <h5 class="fs-15 mb-0">Aug 15, 2025</h5>
+                      <p class="mb-5 fw-medium">Last Active:</p>
+                      <h5 class="fs-15 mb-0"><%= customer_details?.customer_details?.[0]?.date_last_active %></h5>
                     </div>
                   </div>
                   <div class="col-lg-3 col-sm-6">
@@ -2113,7 +2077,7 @@
               </div>
               <div class="card__wrapper">
                 <div class="card__title-wrap mb-25">
-                  <h5 class="card__heading-title">Documents</h5>
+                  <h5 class="card__heading-title">Customer Orders</h5>
                 </div>
                 <div class="table__wrapper table-responsive">
                   <table class="table mb-20" id="projectDocument">
@@ -2304,59 +2268,21 @@
               </div>
               <div class="card__wrapper">
                 <div class="card__title-wrap mb-25">
-                  <h5 class="card__heading-title">Team Discussions</h5>
+                  <h5 class="card__heading-title">Customers Comments</h5>
                 </div>
                 <div class="card__body">
                   <div class="discussions__list">
+                    <% customer_details?.customer_details.forEach((item)=>{ %>
+                    
+
                     <div class="discussion__item">
-                      <h6>Kickoff Meeting</h6>
+                      <h6><%= item?.comment_author%> <%= item?.comment_author_email %></h6>
                       <p>
-                        Discussed initial project scope and timelines,
-                        identified key milestones, and assigned initial tasks to
-                        team members. Ensured everyone was aligned on project
-                        goals and expectations.
-                        <a href="javascript:void(0)">View Notes</a>
+                       <%= item?.comment_content %>
+                        <a href="javascript:void(0)"> <%= item?.comment_approved %> </a>
                       </p>
                     </div>
-                    <div class="discussion__item">
-                      <h6>Design Review</h6>
-                      <p>
-                        Reviewed design prototypes and made adjustments based on
-                        feedback. Emphasized user experience improvements and
-                        discussed visual design elements to enhance user
-                        engagement. <a href="javascript:void(0)">View Notes</a>
-                      </p>
-                    </div>
-                    <div class="discussion__item">
-                      <h6>Development Sprint Planning</h6>
-                      <p>
-                        Outlined tasks for the upcoming sprint, prioritized
-                        features, and set realistic timelines for deliverables.
-                        Discussed potential roadblocks and strategies to
-                        mitigate risks.
-                        <a href="javascript:void(0)">View Notes</a>
-                      </p>
-                    </div>
-                    <div class="discussion__item">
-                      <h6>QA Testing Feedback</h6>
-                      <p>
-                        Discussed bugs and issues found during beta testing,
-                        categorized them based on severity, and assigned them to
-                        appropriate team members for resolution. Planned for
-                        regression testing and validation of fixes.
-                        <a href="javascript:void(0)">View Notes</a>
-                      </p>
-                    </div>
-                    <div class="discussion__item">
-                      <h6>Launch Preparation</h6>
-                      <p>
-                        Finalized details for the project launch, including
-                        marketing strategies, user onboarding processes, and
-                        post-launch support plans. Ensured all team members were
-                        prepared for their roles during the launch phase.
-                        <a href="javascript:void(0)">View Notes</a>
-                      </p>
-                    </div>
+                    <% }) %>
                   </div>
                 </div>
               </div>

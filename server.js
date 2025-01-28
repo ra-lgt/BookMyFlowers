@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
-const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData}=require('./Customers')
+const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails}=require('./Customers')
 const {getAllSalesApi,getAllVendorsAPI}=require('./SalesService')
 const app = express();
 const PORT = 3000;
@@ -87,10 +87,11 @@ app.get('/', async(req, res) => {
 
 app.get('/products', async(req, res) => {
   const vendor_id = req.query?.vendor_id;
-  const products = await getAllProductDetailsAPI({
+  let products = await getAllProductDetailsAPI({
     "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating",
     "store_id":parseInt(vendor_id)
   });
+  products=products.filter((product)=>product?.store?.id===parseInt(vendor_id))
   const total_products=products?.length || 0
 
   const total_in_stock = products?.filter((product) => product.stock_status === 'instock')?.length || 0;
@@ -99,7 +100,6 @@ app.get('/products', async(req, res) => {
 
   const total_price=products?.reduce((acc, product) => acc + parseFloat(product.price), 0) || 0
 
-  console.log(products)
   res.render('products',{total_products,total_in_stock,total_out_of_stock,total_price,products});
 })
 
@@ -120,6 +120,21 @@ app.get('/orders', async(req, res) => {
 
   res.render('orders',{total_orders,total_sales,total_failed,total_completed,orders});
 })
+
+
+app.get('/customer_details',async (req,res) => {
+  const email=req?.query?.email
+
+  const customer_details=await getCustomerDetails(email)
+
+  customer_details?.cart_data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+
+  res.render('customer_details',{customer_details})
+
+  
+})
+
 
 app.get('/customers', async(req, res) => {
   const customers = await getAllCustomersAPIData({});
