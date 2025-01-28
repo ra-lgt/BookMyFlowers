@@ -1133,9 +1133,9 @@
                                     <span><i class="fa-light fa-ban"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Vendors</h6>
+                                    <h6 class="card__sub-title mb-10">Total Customers</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= totalVendors %></h3>
+                                        <h3 class="card__title"><%= total_customers %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1148,9 +1148,9 @@
                                     <span><i class="fa-light fa-badge-check"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Featured Vendors</h6>
+                                    <h6 class="card__sub-title mb-10">Total Spend</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"> <%= featuredVendors %></h3>
+                                        <h3 class="card__title">₹ <%= total_spend %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1163,9 +1163,9 @@
                                     <span><i class="fa-sharp fa-regular fa-user"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Trusted Vendors </h6>
+                                    <h6 class="card__sub-title mb-10">Total Orders </h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= trustedVendors %></h3>
+                                        <h3 class="card__title"><%= total_orders %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1178,9 +1178,9 @@
                                     <span><i class="fa-sharp fa-regular fa-house-person-leave"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Average Rating</h6>
+                                    <h6 class="card__sub-title mb-10">Avg Spend</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= averageRating %></h3>
+                                        <h3 class="card__title">₹ <%= avg_spend %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -1193,60 +1193,49 @@
                                     <thead>
                                         <tr class="table__title table__sort">
 
-                                            <th>ID</th>
-                                            <th>Date registered</th>
-                                            <th>Name</th>
-                                            <th>Rating</th>
-                                            <th>IsTrusted</th>
-                                            <th>IsFeatured</th>
+                                            <th>User ID</th>
+                                            <th>Username</th>
+                                            <th>Email</th>
+                                            <th>Country</th>
+                                            <th>Date Registered</th>
+                                            <th>Orders Count</th>
+                                            <th>Total Spend</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table__body">
-                                        <% vendors.forEach((item)=>{ %>
-                                            <tr>
-                                                <td><%= item?.id %></td>
-                                                <td><%= item?.registered %></td>
-                                                <td>
-                                                    <span class="table-avatar d-flex align-items-center">
-                                                        <a href="#" class="company__thumb"><img
-                                                                src="<%= item?.gravatar %>" alt="image"></a>
-                                                                <%= item?.first_name + item?.last_name %>
-                                                    </span>
-                                                </td>
-                                                    
-                                                <td><%= item?.rating?.rating %><span class="company__rating"><i
-                                                    class="fa-sharp fa-solid fa-star"></i></span></td>
-                                                <td>
-                                                  <% if (item?.trusted === true) { %>
-                                                    <span class="bd-badge bg-success"><%= item?.trusted %></span>
-                                                  <% } else if (item?.trusted === false) { %>
-                                                    <span class="bd-badge bg-danger"><%= item?.trusted %></span>
-                                                <% } %>
+                                        <% customers.forEach((item)=>{ %>
+                                        <tr>
+                                            <td>
 
-                                                </td>
-                                                <td>
-                                                    <% if (item?.featured === true) { %>
-                                                      <span class="bd-badge bg-success"><%= item?.featured %></span>
-                                                    <% } else if (item?.featured === false) { %>
-                                                      <span class="bd-badge bg-danger"><%= item?.featured %></span>
-                                                  <% } %>
-  
-                                               
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex align-items-center justify-content-start gap-10">
-                                                        <a href="products?vendor_id=<%= item?.id %>" class="table__icon reply">
-                                                            <i class="fa-sharp fa-light fa-reply"></i>
-                                                        </a>
-                                                        <button class="removeBtn table__icon delete">
-                                                            <i class="fa-regular fa-trash"></i>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                                  
-                                              </tr>
+                                                <%= item?.id %>
+                                            </td>
+
+                                            <td><%= item?.username %></td>
+
+                                            <td><%= item?.email %></td>
+
+                                            <td><%= item?.country %></td>
+
+                                            <td><%= item?.date_registered_gmt %></td>
+
+                                            <td><%= item?.orders_count %></td>
+                                            
+                                            <td>₹ <%= item?.total_spend %></td>
+
+                                            <td>
+                                                <div class="d-flex align-items-center justify-content-start gap-10">
+                                                    <a href="products?vendor_id=<%= item?.id %>" class="table__icon reply">
+                                                        <i class="fa-sharp fa-light fa-reply"></i>
+                                                    </a>
+                                                    <button class="removeBtn table__icon delete">
+                                                        <i class="fa-regular fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
                                               
+                                        </tr>
+                                        
                                         <% }) %>
                                     </tbody>
                                 </table>

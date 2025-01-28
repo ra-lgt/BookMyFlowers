@@ -9,7 +9,7 @@ const getAllCustomersApi = async (params, interval_type) => {
     }).toString();
 
     // Fetch data with GET method
-    const customers_api = await fetch(`${API_URL}/get_all_customers?${queryParams}`, {
+    const customers_api = await fetch(`${API_URL}/get_all_customers_stat?${queryParams}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     });
@@ -42,4 +42,25 @@ const getCustomerReviewAPI=async()=>{
     return {}
   }
 }
-module.exports={getAllCustomersApi,getCustomerReviewAPI}
+
+const getAllCustomersAPIData = async (params) => {
+  try {
+    // Build query parameters
+    const queryParams = new URLSearchParams({
+      params: params, // Serialize params if it's an object
+    }).toString();
+
+    // Fetch data with GET method
+    const customers_api = await fetch(`${API_URL}/get_all_customers?${queryParams}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const customers_response = await customers_api.json();
+    return customers_response;
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
+}
+module.exports={getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData}

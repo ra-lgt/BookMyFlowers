@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
-const {getAllCustomersApi,getCustomerReviewAPI}=require('./Customers')
+const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData}=require('./Customers')
 const {getAllSalesApi,getAllVendorsAPI}=require('./SalesService')
 const app = express();
 const PORT = 3000;
@@ -86,8 +86,10 @@ app.get('/', async(req, res) => {
 });
 
 app.get('/products', async(req, res) => {
+  const vendor_id = req.query?.vendor_id;
   const products = await getAllProductDetailsAPI({
-    "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating"
+    "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating",
+    "store_id":parseInt(vendor_id)
   });
   const total_products=products?.length || 0
 
@@ -119,7 +121,19 @@ app.get('/orders', async(req, res) => {
   res.render('orders',{total_orders,total_sales,total_failed,total_completed,orders});
 })
 
+app.get('/customers', async(req, res) => {
+  const customers = await getAllCustomersAPIData({});
 
+  const total_customers = customers?.length || 0;
+
+  const total_spend = customers?.reduce((acc, customer) => acc + parseFloat(customer.total_spend), 0) || 0;
+
+  const total_orders = customers?.reduce((acc, customer) => acc + parseFloat(customer.orders_count), 0) || 0;
+
+  const avg_spend = customers?.reduce((acc, customer) => acc + parseFloat(customer.avg_order_value), 0) || 0;
+
+  res.render('customers',{total_customers,total_spend,total_orders,avg_spend,customers});
+})
 
 app.get('/vendors',async(req,res)=>{
   const vendors=await getAllVendorsAPI()
