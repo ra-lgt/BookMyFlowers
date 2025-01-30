@@ -583,7 +583,7 @@
         labels: {
           offsetX: -10,
           formatter: function (value) {
-            return value + "k";
+            return value + " " + "products";
           },
           style: {
             colors: "var(--clr-chart-1)",
@@ -660,7 +660,7 @@
         labels: {
           offsetX: -10,
           formatter: function (value) {
-            return value;
+            return value + " " + "products";
           },
           style: {
             colors: "var(--clr-chart-1)",

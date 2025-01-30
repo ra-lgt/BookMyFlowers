@@ -74,20 +74,20 @@
               <a href="javascript:;" class="authentication-logo logo-white">
                 <img src="assets/images/logo/logo-white.svg" alt="logo" />
               </a>
-              <h4 class="mb-15">Welcome to Manez</h4>
+              <h4 class="mb-15">Welcome to BookMyFlower CRM</h4>
               <p class="mb-15">
                 Please sign-in to your account and start the adventure
               </p>
             </div>
-            <form class="" action="index.html">
+            <form id="signin_form" class="" action="index.html">
               <div class="from__input-box">
                 <div class="form__input-title">
-                  <label for="nameEmail">Email or Username</label>
+                  <label for="nameEmail">Email</label>
                 </div>
                 <div class="form__input">
                   <input
                     class="form-control"
-                    name="name"
+                    name="email"
                     id="nameEmail"
                     type="text"
                     required
@@ -97,9 +97,6 @@
               <div class="from__input-box">
                 <div class="form__input-title d-flex justify-content-between">
                   <label for="passwordInput">Password</label>
-                  <a href="auth-forgot-password-basic.html">
-                    <small>Forgot Password?</small>
-                  </a>
                 </div>
                 <div class="form__input">
                   <input
@@ -114,46 +111,49 @@
                   </div>
                 </div>
               </div>
-              <div class="mb-3">
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    id="remember-me"
-                  />
-                  <label class="form-check-label" for="remember-me">
-                    Remember Me
-                  </label>
-                </div>
-              </div>
+
               <div class="mb-3">
                 <button class="btn btn-primary w-100" type="submit">
                   Sign in
                 </button>
               </div>
             </form>
-            <p class="text-center">
-              <span>New on our platform?</span>
-              <a href="signup-basic.html">
-                <span>Create an account</span>
-              </a>
-            </p>
-            <div class="divider mb-10 text-center">
-              <div class="divider-text">or</div>
-            </div>
-            <div class="common-social">
-              <a href="javascript:;"><i class="fa-brands fa-facebook-f"></i></a>
-              <a href="javascript:;"><i class="fa-brands fa-x-twitter"></i></a>
-              <a href="javascript:;"
-                ><i class="fa-brands fa-linkedin-in"></i
-              ></a>
-              <a href="javascript:;"><i class="fa-brands fa-youtube"></i></a>
-            </div>
           </div>
         </div>
         <!-- /Login -->
       </div>
     </div>
+
+    <script>
+      document.getElementById("signin_form").addEventListener("submit", async function(event) {
+    event.preventDefault(); 
+    const formData = new FormData(event.target);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    const response = await fetch("http://127.0.0.1:8000/admin_signin", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password
+    })
+  });
+
+  const data = await response.json();
+  console.log(data)
+
+  if(data?.status_code === 200) {
+    localStorage.setItem("user_name", data.user_login);
+    window.location.href = "/"
+  }
+  else{
+    // popup alert
+  }
+  });
+    </script>
 
     <!-- / Content -->
 

@@ -170,6 +170,11 @@ app.get('/vendors',async(req,res)=>{
 
 })
 
+app.get('/signin',async(req,res)=>{
+  
+  res.render('signin')
+})
+
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
