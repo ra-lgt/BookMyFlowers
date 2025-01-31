@@ -86,7 +86,7 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-light fa-ban"></i></span>
+                                    <span><i class="fa-solid fa-users"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
                                     <h6 class="card__sub-title mb-10">Total Vendors</h6>
@@ -101,7 +101,7 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-light fa-badge-check"></i></span>
+                                    <span><i class="fa-solid fa-star"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
                                     <h6 class="card__sub-title mb-10">Total Featured Vendors</h6>
@@ -116,7 +116,7 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-sharp fa-regular fa-user"></i></span>
+                                    <span><i class="fa-solid fa-shield-alt"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
                                     <h6 class="card__sub-title mb-10">Total Trusted Vendors </h6>
@@ -131,7 +131,7 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-sharp fa-regular fa-house-person-leave"></i></span>
+                                    <span><i class="fa-solid fa-star-half-alt"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
                                     <h6 class="card__sub-title mb-10">Average Rating</h6>
@@ -192,11 +192,12 @@
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center justify-content-start gap-10">
-                                                        <a href="products?vendor_id=<%= item?.id %>" class="table__icon reply">
-                                                            <i class="fa-sharp fa-light fa-reply"></i>
-                                                        </a>
-                                                        <button class="removeBtn table__icon delete">
-                                                            <i class="fa-regular fa-trash"></i>
+                                                       
+                                                        <button class="example-popover table__icon eye" type="button" data-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="View Products">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </button>
+                                                        <button class="example-popover table__icon cart" type="button" data-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="View Orderss">
+                                                            <i class="fa-solid fa-shopping-cart"></i>
                                                         </button>
                                                     </div>
                                                 </td>
@@ -286,5 +287,24 @@
     <script src="assets/js/vendor/sidebar.js"></script>
 
 </body>
+<style>
+    .table__icon.eye:hover {
+    color: var(--clr-common-white);
+    background-color: var(--clr-action-link);
+}
 
+.table__icon.eye {
+    color: var(--clr-action-link);
+    background: rgba(151, 71, 255, 0.15);
+}
+.table__icon.cart:hover {
+    color: var(--clr-common-white);
+    background-color: var(--clr-action-link);
+}
+
+.table__icon.cart {
+    color: var(--clr-action-link);
+    background: rgba(151, 71, 255, 0.15);
+}
+</style>
 </html>

@@ -9627,7 +9627,7 @@ img {
   overflow: hidden;
 }
 .mz-progress-bar .progress {
-  height: 10px !important;
+  height: 20px !important;
   overflow: visible;
 }
 .mz-progress-bar .progress .progress-bar {
