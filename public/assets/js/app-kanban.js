@@ -138,6 +138,8 @@
           r = t.getAttribute("data-badge-text"),
           d = t.getAttribute("data-assigned");
         l.show(),
+        console.log(a,n,r,d,e)
+        document.querySelector('.kanban-update-item-sidebar')?.setAttribute('data-eid',e?.getAttribute('data-eid') )
           (o.querySelector("#title").value = a),
           (o.querySelector("#due-date").nextSibling.value = n),
           $(".kanban-update-item-sidebar").find(s).val(r).trigger("change"),
@@ -166,8 +168,29 @@
         </div>
       `),
           p.addForm(a, n),
-          n.addEventListener("submit", (e) => {
+          n.addEventListener("submit", async (e) => {
             e.preventDefault();
+            let value = e?.target?.querySelector(".add-new-item")?.value?.trim()
+            let board_name=a
+            let currElement = e?.target?.previousElementSibling?.getAttribute('data-eid') ?? `${a}-0`
+            let number = currElement.match(/\d+$/);
+            number=number?.[0]
+            if(number && number==0){
+              currElement=`${a}-${parseInt(number)+1}`
+            }
+
+            const saveKanbanCard=await fetch('http://127.0.0.1:8000/create_kanban_card',{
+              method:'POST',
+              headers:{
+                'Content-Type':'application/json'
+              },
+              body:JSON.stringify({
+                board_name:board_name,
+                card_id:currElement,
+                card_title:value
+              })
+            })
+
             var t = Array.from(
               document.querySelectorAll(
                 `.kanban-board[data-id="${a}"] .kanban-item`
@@ -253,16 +276,6 @@
             (e = e.getAttribute("data-members") || ""),
             `
 <div class="d-flex justify-content-between align-items-center flex-wrap mt-2">
-    <div class="d-flex">
-        <span class="d-flex align-items-center me-2">
-            <i class="icon-base bx bx-paperclip me-1"></i>
-            <span class="attachments">${t}</span>
-        </span>
-        <span class="d-flex align-items-center ms-2">
-            <i class="icon-base bx bx-chat me-1"></i>
-            <span>${a}</span>
-        </span>
-    </div>
     <div class="avatar-group d-flex align-items-center assigned-avatar">
         ${u(n, !0, "xs", null, e)}
     </div>

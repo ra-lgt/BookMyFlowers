@@ -169,7 +169,10 @@ app.get('/vendors',async(req,res)=>{
 
 
 })
+app.get('/leads',async(req,res)=>{
+  res.render('leads')
 
+})
 app.get('/signin',async(req,res)=>{
   
   res.render('signin')
