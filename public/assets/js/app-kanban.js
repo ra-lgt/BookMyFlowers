@@ -18,7 +18,7 @@
           "</div>"
       : e.text;
   }
-  (g = await fetch(i + "json/kanban.json")).ok || console.error("error", g),
+  (g = await fetch('http://127.0.0.1:8000/get_kanban_data')).ok || console.error("error", g),
     (g = await g.json()),
     d &&
       d.flatpickr({
@@ -128,20 +128,33 @@
         var t = e,
           a = (t.getAttribute("data-eid") ? t.querySelector(".kanban-text") : t)
             .textContent,
-          n = t.getAttribute("data-due-date"),
-          r = new Date(),
-          d = r.getFullYear(),
-          n = n
-            ? n + ", " + d
-            : `${r.getDate()} ${r.toLocaleString("en", { month: "long" })}, ` +
-              d,
+            n = t.getAttribute("data-due-date"), 
+            r = new Date(), 
+            d = r.getFullYear();
+            
+            if (n) {
+              let parsedDate = new Date(n);
+              n = parsedDate.toISOString().split("T")[0]; // Format as "YYYY-MM-DD"
+          } else {
+              n = r.toISOString().split("T")[0]; // Default to today's date
+          }
+            
           r = t.getAttribute("data-badge-text"),
           d = t.getAttribute("data-assigned");
         l.show(),
-        console.log(a,n,r,d,e)
+        console.log(e)
+      document.querySelector('.ql-editor').innerHTML=e.getAttribute('data-comments')
+
         document.querySelector('.kanban-update-item-sidebar')?.setAttribute('data-eid',e?.getAttribute('data-eid') )
+        const dueDateInput = o.querySelector("#due-date");
+        if (dueDateInput && typeof flatpickr !== "undefined") {
+          flatpickr(dueDateInput, {
+              defaultDate: n
+          }).setDate(n); 
+      }
+  
           (o.querySelector("#title").value = a),
-          (o.querySelector("#due-date").nextSibling.value = n),
+          (o.querySelector("#due-date").value = n),
           $(".kanban-update-item-sidebar").find(s).val(r).trigger("change"),
           (o.querySelector(".assigned").innerHTML = ""),
           o.querySelector(".assigned").insertAdjacentHTML(
@@ -238,6 +251,7 @@
     f = Array.from(document.querySelectorAll(".kanban-item"));
   f.length &&
     f.forEach((e) => {
+      console.log("eeeeee",e);
       var t,
         a,
         n = `<span class="kanban-text">${e.textContent}</span>`;
@@ -245,7 +259,7 @@
       e.getAttribute("data-image") &&
         (r = `
               <img class="img-fluid rounded mb-2"
-                   src="${i}img/elements/${e.getAttribute("data-image")}">
+                   src="data:image/png;base64,${e.getAttribute('data-image')}">
           `),
         (e.textContent = ""),
         e.getAttribute("data-badge") &&
