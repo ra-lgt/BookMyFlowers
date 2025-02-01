@@ -765,7 +765,7 @@
       chart: {
         type: "donut",
         width: "100%",
-        height: 243,
+        height: 280,
       },
       colors: ["var(--clr-theme-secondary)", "var(--clr-theme-primary)"],
       legend: {
@@ -7072,7 +7072,7 @@
         },
       },
       chart: {
-        height: 350,
+        height: 382,
         type: "treemap",
         toolbar: {
           show: true,
