@@ -132,7 +132,7 @@
             r = new Date(), 
             d = r.getFullYear();
             
-            if (n) {
+            if (n && n!=" ") {
               let parsedDate = new Date(n);
               n = parsedDate.toISOString().split("T")[0]; // Format as "YYYY-MM-DD"
           } else {
@@ -256,7 +256,7 @@
         a,
         n = `<span class="kanban-text">${e.textContent}</span>`;
       let r = "";
-      e.getAttribute("data-image") &&
+      e.getAttribute("data-image") && e.getAttribute("data-image")!=" " &&
         (r = `
               <img class="img-fluid rounded mb-2"
                    src="data:image/png;base64,${e.getAttribute('data-image')}">

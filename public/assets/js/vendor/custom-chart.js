@@ -262,7 +262,38 @@
 
     })
   )
+  const handleStatUpdate=(interval_type)=>{
+    if(interval_type=="month"){
 
+    document.getElementById('sales').innerHTML = `${month_sales_stat?.sales_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    document.getElementById('cart').innerHTML = `${month_sales_stat?.cart_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    }
+    else if(interval_type=="week"){
+    document.getElementById('sales').innerHTML = `${week_sales_stat?.sales_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    document.getElementById('cart').innerHTML = `${week_sales_stat?.cart_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    }
+    else if(interval_type=="year"){
+    document.getElementById('sales').innerHTML = `${year_sales_stat?.sales_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    document.getElementById('cart').innerHTML = `${year_sales_stat?.cart_data?.reduce((a, b) => a + b, 0) || 0} products`;
+
+    }
+
+  }
+    document.getElementById('sales').innerHTML = `${week_sales_stat?.sales_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    document.getElementById('cart').innerHTML = `${week_sales_stat?.cart_data?.reduce((a, b) => a + b, 0) || 0} products`;
+    
+
+  document.getElementById('pills-week-tab').addEventListener('click', function() {
+    handleStatUpdate('week');
+  });
+
+  document.getElementById('pills-month-tab').addEventListener('click', function() {
+    handleStatUpdate('month');
+  });
+
+  document.getElementById('pills-year-tab').addEventListener('click', function() {
+    handleStatUpdate('year');
+  });
 
   var windowOn = $(window);
 
@@ -437,7 +468,10 @@
     var chart = new ApexCharts(
       document.querySelector("#workingHourMonth"),
       options
-    );
+    );    const element = document.getElementById('pills-month');
+    if (element && element.classList.contains('active')) {
+     
+    }
     chart.render();
   }
   if (jQuery("#workingHourYear").length > 0) {
@@ -814,7 +848,7 @@
         enabled: true,
         y: {
           formatter: function (val) {
-            return "₹" + " " + val;
+            return  val;
           },
           color: "var(--clr-action-success)",
         },

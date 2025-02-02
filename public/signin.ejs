@@ -131,14 +131,14 @@
     const email = formData.get("email");
     const password = formData.get("password");
 
-    const response = await fetch("http://127.0.0.1:8000/admin_signin", {
+    const response = await fetch("/signin", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      email: email,
-      password: password
+       email,
+       password
     })
   });
 
@@ -147,7 +147,7 @@
 
   if(data?.status_code === 200) {
     localStorage.setItem("user_name", data.user_login);
-    window.location.href = "/"
+    window.location.href = "/home"
   }
   else{
     // popup alert

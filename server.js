@@ -1,11 +1,29 @@
 const express = require('express');
 const path = require('path');
+const session = require("express-session");
 const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
 const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails}=require('./Customers')
 const {getAllSalesApi,getAllVendorsAPI}=require('./SalesService')
 const app = express();
+app.use(express.json());
 const PORT = 3000;
+
+app.use(session({
+  secret: "book_my_flowers",  // Change this to a strong secret
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }  // Set `true` if using HTTPS
+}));
+
+function isAuthenticated(req, res, next) {
+  if (req.session.user) {
+    next(); 
+  } else {
+    res.redirect("/"); 
+  }
+}
+
 
 function getSafeValue(data, key, fallback = ':( unexpected error') {
   return data && data[key] !== undefined ? data[key] : fallback;
@@ -18,7 +36,7 @@ app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
  
 
 
-app.get('/', async(req, res) => {
+app.get('/home', isAuthenticated,async(req, res) => {
   const currentYear = new Date().getFullYear();
   let sales_based_product_param={
     from_timestamp:0,
@@ -85,13 +103,24 @@ app.get('/', async(req, res) => {
   res.render('dashboard', { product_counts,orders_counts,customers_counts,sales_count, getSafeValue,currentYear,sales_based_product_desc,percentage_mapping,sales_based_product_asc });
 });
 
-app.get('/products', async(req, res) => {
+app.get('/products',isAuthenticated, async(req, res) => {
   const vendor_id = req.query?.vendor_id;
-  let products = await getAllProductDetailsAPI({
-    "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating",
-    "store_id":parseInt(vendor_id)
-  });
-  products=products.filter((product)=>product?.store?.id===parseInt(vendor_id))
+  let products=undefined
+  if(vendor_id!=undefined){
+    products = await getAllProductDetailsAPI({
+      "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating",
+      "store_id":parseInt(vendor_id)
+    });
+    products=products.filter((product)=>product?.store?.id===parseInt(vendor_id))
+
+
+  }
+  else{
+    products = await getAllProductDetailsAPI({
+      "_fields": "name,date_created,stock_status,price,total_sales,images,store,average_rating"
+    });
+  }
+  
   const total_products=products?.length || 0
 
   const total_in_stock = products?.filter((product) => product.stock_status === 'instock')?.length || 0;
@@ -104,7 +133,7 @@ app.get('/products', async(req, res) => {
 })
 
 
-app.get('/orders', async(req, res) => {
+app.get('/orders',isAuthenticated, async(req, res) => {
   const orders = await getAllOrdersAPI({
     "included_keys": ['id','date_created', 'total', 'billing', 'status', 'payment_method_title', 'line_items', 'store']
 
@@ -122,7 +151,7 @@ app.get('/orders', async(req, res) => {
 })
 
 
-app.get('/customer_details',async (req,res) => {
+app.get('/customer_details',isAuthenticated,async (req,res) => {
   const email=req?.query?.email
 
   const customer_details=await getCustomerDetails(email)
@@ -136,7 +165,7 @@ app.get('/customer_details',async (req,res) => {
 })
 
 
-app.get('/customers', async(req, res) => {
+app.get('/customers',isAuthenticated, async(req, res) => {
   const customers = await getAllCustomersAPIData({});
 
   const total_customers = customers?.length || 0;
@@ -150,7 +179,7 @@ app.get('/customers', async(req, res) => {
   res.render('customers',{total_customers,total_spend,total_orders,avg_spend,customers});
 })
 
-app.get('/vendors',async(req,res)=>{
+app.get('/vendors',isAuthenticated,async(req,res)=>{
   const vendors=await getAllVendorsAPI()
 
   const totalVendors = vendors.length;
@@ -169,11 +198,49 @@ app.get('/vendors',async(req,res)=>{
 
 
 })
-app.get('/leads',async(req,res)=>{
+app.get('/leads',isAuthenticated,async(req,res)=>{
   res.render('leads')
 
 })
-app.get('/signin',async(req,res)=>{
+app.post('/signin',async(req,res)=>{
+  const email=req.body.email
+  const password=req.body.password
+
+  const check_cred=await fetch('http://localhost:8000/admin_signin',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+      email:email,
+      password:password
+    })
+  }
+  )
+
+  const check_cred_data=await check_cred.json()
+  if(check_cred_data?.status_code==200){
+    req.session.user = email;
+    
+  }
+  return res.json(check_cred_data)
+
+  
+})
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      // If there's an error destroying the session, handle it
+      return res.status(500).json({ message: "Logout failed", status_code: 503 });
+    }
+
+    // If session is destroyed successfully
+    res.json({ message: "Logged out successfully", status_code: 200 });
+  });
+});
+
+app.get('/',async(req,res)=>{
   
   res.render('signin')
 })
