@@ -3,7 +3,7 @@ const path = require('path');
 const session = require("express-session");
 const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
-const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails}=require('./Customers')
+const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails,getContactFormDetails}=require('./Customers')
 const {getAllSalesApi,getAllVendorsAPI}=require('./SalesService')
 const app = express();
 app.use(express.json());
@@ -36,7 +36,7 @@ app.use('/assets', express.static(path.join(__dirname, 'public', 'assets')));
  
 
 
-app.get('/home', isAuthenticated,async(req, res) => {
+app.get('/home', isAuthenticated, async(req, res) => {
   const currentYear = new Date().getFullYear();
   let sales_based_product_param={
     from_timestamp:0,
@@ -134,10 +134,14 @@ app.get('/products',isAuthenticated, async(req, res) => {
 
 
 app.get('/orders',isAuthenticated, async(req, res) => {
-  const orders = await getAllOrdersAPI({
+  const vendor_id=req.query?.vendor_id
+  let orders = await getAllOrdersAPI({
     "included_keys": ['id','date_created', 'total', 'billing', 'status', 'payment_method_title', 'line_items', 'store']
 
   });
+  if(vendor_id!=undefined){
+    orders=orders.filter((order)=>order?.store?.id===parseInt(vendor_id))
+  }
 
   const total_orders=orders?.length || 0
 
@@ -177,6 +181,48 @@ app.get('/customers',isAuthenticated, async(req, res) => {
   const avg_spend = customers?.reduce((acc, customer) => acc + parseFloat(customer.avg_order_value), 0) || 0;
 
   res.render('customers',{total_customers,total_spend,total_orders,avg_spend,customers});
+})
+
+app.get('/contacts', async(req, res) => {
+
+  const get_all_contacts=await getContactFormDetails()
+
+  let harmonised_contact_data=[]
+
+  get_all_contacts.map((contact) => {
+    let content_array = contact?.post_content.split('\n')
+    let contact_info={
+      'name':content_array?.[0],
+      'email':content_array?.[1],
+      'mobile':content_array?.[2],
+      'city':content_array?.[3],
+    }
+    let curr_index=4
+    if(content_array.includes('collaborate-with-us')){
+      contact_info['sale_category']=content_array[curr_index]
+      curr_index++
+
+    }
+    Object.assign(contact_info,{
+      'message':content_array?.[curr_index],
+      'date_posted':contact?.post_date,
+      'post_author':contact?.post_author,
+      'contact_category':content_array?.[curr_index+9]
+    })
+
+    harmonised_contact_data.push(contact_info)
+
+})
+    let contact_length=harmonised_contact_data.length
+
+    let total_collaboration_requests=harmonised_contact_data.filter((contact)=>contact?.contact_category=="Collaborate with Us").length
+
+    let total_franchise_requests=harmonised_contact_data.filter((contact)=>contact?.contact_category=="Franchise Enquiries").length
+
+  
+
+  
+  res.render('contacts',{harmonised_contact_data,contact_length,total_collaboration_requests,total_franchise_requests});
 })
 
 app.get('/vendors',isAuthenticated,async(req,res)=>{

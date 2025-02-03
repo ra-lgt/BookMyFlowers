@@ -84,4 +84,21 @@ const getCustomerDetails=async (email)=>{
   }
 
 }
-module.exports={getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails}
+
+const getContactFormDetails=async ()=>{
+  try{
+    const customers_api = await fetch(`${API_URL}/get_contacts_details`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+  
+    const customers_response = await customers_api.json();
+    return customers_response;
+  }
+  catch(err){
+    console.log(err)
+    return {}
+  }
+
+}
+module.exports={getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails,getContactFormDetails}

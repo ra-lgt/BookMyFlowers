@@ -66,7 +66,8 @@
     <div class="page__full-wrapper">
       <!-- App sidebar area start -->
       <!-- app-sidebar-start -->
-       <%- include('sideNavBar') %>
+      <%- include('sideNavBar', { activePage: 'dashboard' }) %>
+
       <div class="app__offcanvas-overlay"></div>
       <!-- app-sidebar-end -->
       <!-- App sidebar area end -->
@@ -134,7 +135,7 @@
                           </li>
                         </ul>
                       </div>
-                      <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                      <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>This chart displays the number of sales completed and the total cart value added by customers, tracked weekly, monthly, and yearly.</span>">
                         <i class="icon-circle-info"></i>
                       </button>
                     </div>
@@ -163,6 +164,13 @@
                   </div>
                 </div>
                 <div class="tab-content" id="pills-tabContent">
+                  <div class="loading card__wrapper style_two" id="sales_loading">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
                   <div
                     class="tab-pane fade"
                     id="pills-year"
@@ -207,7 +215,7 @@
                     </div>
                     <div class="card__dropdown">
                       <div class="dropdown">
-                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Number of completed purchases with percentage change from last week.</span>">
                           <i class="icon-circle-info"></i>
                         </button>
                   
@@ -235,7 +243,7 @@
                     </div>
                     <div class="card__dropdown">
                       <div class="dropdown">
-                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Total available products, showing weekly increase or decrease.</span>">
                           <i class="icon-circle-info"></i>
                         </button>
                    
@@ -262,7 +270,7 @@
                     </div>
                     <div class="card__dropdown">
                       <div class="dropdown">
-                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Count of customers and their change from the previous week.</span>">
                           <i class="icon-circle-info"></i>
                         </button>
                       
@@ -289,7 +297,7 @@
                     </div>
                     <div class="card__dropdown">
                       <div class="dropdown">
-                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Revenue generated, comparing with last week’s performance.</span>">
                           <i class="icon-circle-info"></i>
                         </button>
                
@@ -317,13 +325,20 @@
                   <div class="card__dropdown">
                     <div class="dropdown">
                      
-                      <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                      <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span> Displays the top-selling product categories along with their sales count.</span>">
                         <i class="icon-circle-info"></i>
                       </button>
                     </div>
                   </div>
                 </div>
                 <div class="card__pie-chart mb-10">
+                  <div class="loading card__wrapper style_two" id="selling_category">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                  </div>
                   <div id="pieChartAud"></div>
                 </div>
                 <div
@@ -365,7 +380,7 @@
                     
                     <div class="card__dropdown">
                       <div class="dropdown">
-                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                        <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Displays sales distribution by country, highlighting the regions contributing to total sales.</span>">
                           <i class="icon-circle-info"></i>
                         </button>
                
@@ -374,6 +389,13 @@
                   </div>
                   <div class="card__content">
                     <div class="card__line-chart">
+                      <div class="loading card__wrapper style_two" id="country_sales">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
                       <div id="treemapCharts2"></div>
                     </div>
                   </div>
@@ -434,7 +456,7 @@
                           </li>
                         </ul>
                       </div>
-                      <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                      <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tracks sales and profit trends over the year, allowing comparison across different time periods.</span>">
                         <i class="icon-circle-info"></i>
                       </button>
                     </div>
@@ -444,6 +466,13 @@
                 </div>
                 <div class="card__content">
                   <div class="tab-content" id="pills-tabContent2">
+                    <div class="loading card__wrapper style_two" id="order_overview">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
                     <!-- Year Tab -->
                     <div
                       class="tab-pane fade"
@@ -508,7 +537,7 @@
                   class="card__title-wrap d-flex flex-wrap gap-10 align-items-center justify-content-between mb-35"
                 >
                   <h5 class="card__heading-title">Customer Satisfaction</h5>
-                  <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span>Tooltip on top</span>">
+                  <button  data-bs-toggle="tooltip" data-bs-offset="0,6" data-bs-placement="top" data-bs-html="true" data-bs-original-title="<i class='icon-base bx bx-bell icon-xs' ></i> <span> Breakdown of customer ratings from 1 to 5 stars, showing the percentage distribution of each rating.</span>">
                     <i class="icon-circle-info"></i>
                   </button>
                 </div>

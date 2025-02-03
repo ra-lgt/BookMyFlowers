@@ -58,7 +58,7 @@
 
         <!-- App sidebar area start -->
         <!-- app-sidebar-start -->
-        <%- include('sideNavBar') %>
+        <%- include('sideNavBar', { activePage: 'vendor' }) %>
         <div class="app__offcanvas-overlay"></div>
         <!-- app-sidebar-end -->
         <!-- App sidebar area end -->
@@ -194,6 +194,12 @@
                                                     <div class="d-flex align-items-center justify-content-start gap-10">
                                                        <a href="/products?vendor_id= <%= item?.id %>">
                                                         <button class="example-popover table__icon eye" type="button" data-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="View Products">
+                                                            <i class="fa-solid fa-eye"></i>
+                                                        </button>
+                                                    </a>
+
+                                                    <a href="/orders?vendor_id= <%= item?.id %>">
+                                                        <button class="example-popover table__icon eye" type="button" data-container="body" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="View Order Placed For This Vendor">
                                                             <i class="fa-solid fa-eye"></i>
                                                         </button>
                                                     </a>

@@ -74,6 +74,9 @@
     };
 }
 
+function stopLoader(id){
+  document.getElementById(id).style.display="none";
+}
 
   async function getCategoryBasedSalesApi() {
     const get_all_category_based_sales = await fetch(
@@ -196,7 +199,7 @@
       all_category_values.indexOf(Math.max(...all_category_values))
     ];
   document.getElementById("product_price").innerHTML =
-    "₹" + " " + Math.max(...all_category_values).toFixed(2);
+     Math.max(...all_category_values).toFixed(2);
   const results = await Promise.all(
 
     ["year", "month", "week"].map(async (interval_type, key) => {
@@ -563,6 +566,8 @@
   /* Line Chat */
   /* lineChart weekly */
   if (jQuery("#lineChartWeek").length > 0) {
+    stopLoader("sales_loading")
+
     var options = {
       series: [
         {
@@ -793,6 +798,7 @@
   }
   /* Pie Chart */
   if (jQuery("#pieChartAud").length > 0) {
+  stopLoader("selling_category")
     var options = {
       series: all_category_values,
       labels: all_category_keys,
@@ -871,6 +877,7 @@
   /* Sales Chart Weekly */
   [0,1,2].map((value,key)=>{
     if (jQuery(`#chart_${value}`).length > 0) {
+    stopLoader("order_overview")
       var options = {
         series: [
           {
@@ -7088,6 +7095,7 @@
   /* treemapCharts */
 
   if (jQuery("#treemapCharts2").length > 0) {
+  stopLoader("country_sales")
     var options = {
       series: [
         {

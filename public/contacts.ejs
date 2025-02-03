@@ -58,7 +58,7 @@
 
         <!-- App sidebar area start -->
         <!-- app-sidebar-start -->
-        <%- include('sideNavBar', { activePage: 'orders' }) %>
+        <%- include('sideNavBar', { activePage: 'customers' }) %>
         <div class="app__offcanvas-overlay"></div>
         <!-- app-sidebar-end -->
         <!-- App sidebar area end -->
@@ -76,7 +76,7 @@
                         <nav>
                             <ol class="breadcrumb mb-0">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Company</li>
+                                <li class="breadcrumb-item active" aria-current="page">Contacts</li>
                             </ol>
                         </nav>
                     </div>
@@ -86,12 +86,12 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-solid fa-shopping-cart"></i></span>
+                                    <span><i class="fa-solid fa-users"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Orders</h6>
+                                    <h6 class="card__sub-title mb-10">Total Contact Request</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= total_orders %></h3>
+                                        <h3 class="card__title"><%= contact_length %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -101,12 +101,12 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-solid fa-dollar-sign"></i></span>
+                                    <span><i class="fa-solid fa-wallet"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Sales</h6>
+                                    <h6 class="card__sub-title mb-10">Total Collaborate</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title">₹ <%= total_sales %></h3>
+                                        <h3 class="card__title"><%= total_collaboration_requests %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -116,12 +116,12 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-solid fa-check-circle"></i></span>
+                                    <span><i class="fa-solid fa-box-open"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Completed Orders </h6>
+                                    <h6 class="card__sub-title mb-10">Total Franchise </h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= total_completed %></h3>
+                                        <h3 class="card__title"><%= total_franchise_requests %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -131,12 +131,12 @@
                         <div class="card__wrapper">
                             <div class="d-flex align-items-center gap-sm">
                                 <div class="card__icon">
-                                    <span><i class="fa-solid fa-times-circle"></i></span>
+                                    <span><i class="fa-solid fa-chart-line"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Failed Orders</h6>
+                                    <h6 class="card__sub-title mb-10">Avg Spend</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= total_failed %></h3>
+                                        <h3 class="card__title">₹ <%= 0 %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -149,79 +149,60 @@
                                     <thead>
                                         <tr class="table__title table__sort">
 
-                                            <th>ID</th>
-                                            <th>Date Created</th>
-                                            <th>Price</th>
-                                            <th>Payment Method</th>
-                                            <th>Status</th>
-                                            <th>Customer Name</th>
-                                            <th>Customer Email</th>
-                                            <th>Shop Owner Name</th>
-                                            <th>Shop Name</th>
-                                            <th>Details</th>
+                                            <th>Author ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Mobile</th>
+                                            <th>Date Posted</th>
+                                            <th>City</th>
+                                            <th>Contact Category</th>
+                                            <th>Message</th>
                                         </tr>
                                     </thead>
                                     <tbody class="table__body">
-                                        <% orders.forEach((item)=>{ %>
-                                            <tr>
-                                                <td><%= item?.id %></td>
-                                                <td><%= item?.date_created %></td>
-                                                <td>₹ <%= item?.total %></td>
-                                                <td><%= item?.payment_method_title %></td>
-                                                <td>
-                                                  <% if (item?.status === 'completed') { %>
-                                                    <span class="bd-badge bg-success"><%= item?.status %></span>
-                                                  <% } else if (item?.status === 'pending') { %>
-                                                    <span class="bd-badge bg-warning"><%= item?.status %></span>
-                                                  <% } else if (item?.status === 'cancelled') { %>
-                                                    <span class="bd-badge bg-danger"><%= item?.status %></span>
-                                                  <% } else if (item?.status === 'on-hold') { %>
-                                                    <span class="bd-badge bg-secondary"><%= item?.status %></span>
-                                                  <% } else { %>
-                                                    <span class="bd-badge bg-secondary">Unknown</span>
-                                                  <% } %>
-                                                </td>
-                                                <td><%= item?.billing?.first_name + " " + item?.billing?.last_name %></td>
-                                                <td><%= item?.billing?.email %></td>
-                                                <td><%= item?.store?.name %></td>
-                                                <td><%= item?.store?.shop_name %></td>
-                                                <td>
-                                                  <div class="accordion" id="accordionItem<%= item?.id %>">
-                                                    <div class="accordion-item">
-                                                      <h2 class="accordion-header" id="heading<%= item?.id %>">
-                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= item?.id %>" aria-expanded="false" aria-controls="collapse<%= item?.id %>">
-                                                          Details
-                                                        </button>
-                                                      </h2>
-                                                      <div id="collapse<%= item?.id %>" class="accordion-collapse collapse" aria-labelledby="heading<%= item?.id %>" data-bs-parent="#accordionItem<%= item?.id %>">
-                                                        <div class="accordion-body">
-                                                            <div class="table__wrapper table-responsive">
-                                                                <table class="table mb-20">
-                                                                <thead>
-                                                                    <tr class="table__title table__sort">
-                                                                    <th>Product Name</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Price</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody class="table__body">
-                                                                    <% item?.line_items.forEach((product)=>{ %>
-                                                                    <tr>
-                                                                        <td><%= product?.name %></td>
-                                                                        <td><%= product?.quantity %></td>
-                                                                        <td>₹ <%= product?.total %></td>
-                                                                    </tr>
-                                                                    <% }) %>
-                                                                </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                                </td>
-                                              </tr>
+                                        <% harmonised_contact_data.forEach((item)=>{ %>
+                                        <tr>
+                                            <td>
+
+                                                <%= item?.post_author %>
+                                            </td>
+
+                                            <td><%= item?.name %></td>
+
+                                            <td><%= item?.email %></td>
+
+                                            <td><%= item?.mobile %></td>
+
+                                            <td><%= item?.date_posted %></td>
+
+                                            <td><%= item?.city %></td>
+                                            <td>
+
+                                            <% if(item?.contact_category == 'Collaborate with Us'){ %>
+                                            
+                                            <span class="bd-badge bg-success">
+                                                <%= item?.contact_category %>
+                                            </span>
+
+                                            <% } else if(item?.contact_category == 'Franchise Enquiries'){ %>
+
+                                            <span class="bd-badge bg-secondary">
+                                                <%= item?.contact_category %>
+                                            </span>
+
+                                            <% } else { %>
+
+                                             <%= item?.contact_category %>
+
+                                            <% } %>
+                                        </td>
+
+                                            <td> <%= item?.message %></td>
+
+
                                               
+                                        </tr>
+                                        
                                         <% }) %>
                                     </tbody>
                                 </table>
@@ -237,7 +218,7 @@
             <!-- footer area end -->
         </div>
     </div>
-    <!-- Dashboard area end -->
+
 
 
     <!-- new company details edit modal end -->

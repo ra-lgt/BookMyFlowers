@@ -22,7 +22,7 @@
             </li>
           
             <li class="slide ">
-              <a href="/" class="sidebar__menu-item">
+              <a href="/" class="sidebar__menu-item <%= (activePage === 'dashboard') ? 'active' : '' %>">
                 <div class="side-menu__icon"><i class="icon-house"></i></div>
                 <span class="sidebar__menu-label">Dashboard</span>
                
@@ -30,7 +30,7 @@
             </li>
           
             <li class="slide ">
-              <a href="/products" class="sidebar__menu-item">
+              <a href="/products" class="sidebar__menu-item <%= (activePage === 'products') ? 'active' : '' %>">
                 <div class="side-menu__icon"><i class="icon-box-archive"></i></div>
                 <span class="sidebar__menu-label">Products</span>
                
@@ -38,7 +38,7 @@
             </li>
           
             <li class="slide ">
-              <a href="/orders" class="sidebar__menu-item">
+              <a href="/orders" class="sidebar__menu-item <%= (activePage === 'orders') ? 'active' : '' %>">
                 <div class="side-menu__icon"><i class="icon-clipboard-list"></i></div>
                 <span class="sidebar__menu-label">Orders</span>
                
@@ -46,7 +46,7 @@
             </li>
           
             <li class="slide ">
-              <a href="/customers" class="sidebar__menu-item">
+              <a href="/customers" class="sidebar__menu-item <%= (activePage === 'customers') ? 'active' : '' %>">
                 <div class="side-menu__icon">
                   <i class="icon-circle-user"></i>
                 </div>
@@ -54,22 +54,42 @@
                
               </a>
             </li>
-            <li class="slide ">
-              <a href="/leads" class="sidebar__menu-item">
+            <!-- <li class="slide ">
+              <a href="/leads" class="sidebar__menu-item <%= (activePage === 'leads') ? 'active' : '' %>">
                 <div class="side-menu__icon">
                   <i class="icon-people-group"></i>
                 </div>
                 <span class="sidebar__menu-label">Leads</span>
                
               </a>
-            </li>
+            </li> -->
           
             <li class="slide ">
-              <a href="/vendors" class="sidebar__menu-item">
+              <a href="/vendors" class="sidebar__menu-item <%= (activePage === 'vendor') ? 'active' : '' %>">
                 <div class="side-menu__icon">
                   <i class="icon-store"></i>
                 </div>
                 <span class="sidebar__menu-label">Vendors/Stores</span>
+               
+              </a>
+            </li>
+
+            <li class="slide ">
+              <a href="/contacts" class="sidebar__menu-item <%= (activePage === 'vendor') ? 'active' : '' %>">
+                <div class="side-menu__icon">
+                  <i class="icon-store"></i>
+                </div>
+                <span class="sidebar__menu-label">Contacts</span>
+               
+              </a>
+            </li>
+
+            <li class="slide ">
+              <a onclick="handleLogout()" class="sidebar__menu-item">
+                <div class="side-menu__icon">
+                  <i class="icon-arrow-right-to-bracket"></i>
+                </div>
+                <span class="sidebar__menu-label">Logout</span>
                
               </a>
             </li>
@@ -80,3 +100,16 @@
 
     </div>
   </div>
+  <script>
+
+    const handleLogout = async () => {
+      const logout_route=await fetch('/logout')
+
+      const logout_data=await logout_route.json()
+
+      if(logout_data?.status_code===200){
+        localStorage.removeItem('user_name')
+        window.location.href='/'
+      }
+    }
+  </script>

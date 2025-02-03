@@ -2952,6 +2952,9 @@ input[type="file"] {
 .bd-theme-toggle #bd-theme-toggler:checked + i {
   inset-inline-end: calc(50% - 4px);
 }
+.slide{
+  margin-bottom: 10%;
+}
 .bd-theme-toggle-slide {
   position: absolute;
   top: 50%;
