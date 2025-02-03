@@ -7,7 +7,7 @@
   data-skin="default"
   data-assets-path="assets/"
   data-template="vertical-menu-template"
-  data-bs-theme="dark"
+  data-bs-theme="white"
 >
   <head>
 
@@ -163,21 +163,7 @@
                     ></button>
                   </div>
                   <div class="offcanvas-body pt-0">
-                    <div class="nav-align-top">
-                      <ul class="nav nav-tabs mb-6 rounded-0">
-                        <li class="nav-item">
-                          <button
-                            class="nav-link active"
-                            data-bs-toggle="tab"
-                            data-bs-target="#tab-update"
-                          >
-                            <i class="icon-base bx bx-edit icon-sm me-1_5"></i>
-                            <span class="align-middle">Edit</span>
-                          </button>
-                        </li>
-
-                      </ul>
-                    </div>
+                  
                     <div class="tab-content p-0">
                       <!-- Update item/tasks -->
                       <div
@@ -245,8 +231,17 @@
                             </select>
                           </div>
                           <div class="mb-6">
-                            <label class="form-label">Assigned</label>
-                            <div class="assigned d-flex flex-wrap"></div>
+                            <div>
+                              <label for="defaultFormControlInput" class="form-label">Lead Name</label>
+                              <input type="text" class="form-control" id="defaultFormControlInput" placeholder="John Doe" aria-describedby="defaultFormControlHelp">
+                              
+                            </div>
+                          </div>
+                          <div class ="mb-6">
+                            <div>
+                              <label for="exampleFormControlInput1" class="form-label">Lead E-Mail</label>
+                                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+                            </div>
                           </div>
                           <div class="mb-6">
                             <label class="form-label" for="attachments"

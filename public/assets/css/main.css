@@ -5775,7 +5775,7 @@ img {
   white-space: nowrap;
   color: var(--clr-text-body);
   position: relative;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1;
   display: flex;
   align-items: center;
@@ -5785,7 +5785,7 @@ img {
 .app-sidebar .side-menu__icon {
   margin-inline-end: 10px;
   line-height: 0;
-  font-size: 14px;
+  font-size: 20px;
   text-align: center;
   color: var(--clr-text-body);
   border-radius: 4px;
