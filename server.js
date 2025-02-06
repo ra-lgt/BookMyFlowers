@@ -4,7 +4,7 @@ const session = require("express-session");
 const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=require('./Products')
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
 const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails,getContactFormDetails}=require('./Customers')
-const {getAllSalesApi,getAllVendorsAPI}=require('./SalesService')
+const {getAllSalesApi,getAllVendorsAPI,getAllMailTemplateAPI}=require('./SalesService')
 const app = express();
 app.use(express.json());
 const PORT = 3000;
@@ -291,6 +291,28 @@ app.get('/',async(req,res)=>{
   res.render('signin')
 })
 
+app.get('/mail_config',async(req,res)=>{
+  const config_id=req.query?.id
+  if(config_id!=undefined){
+    let all_mail_config=await getAllMailTemplateAPI()
+
+    all_mail_config=all_mail_config.filter((config)=>config.id===parseInt(config_id))
+    
+    res.render('mail_config',{mail_config_data:all_mail_config?.[0]})
+  }
+  else{
+    res.render('mail_config',{mail_config_data:{}})
+
+  }
+
+})
+
+app.get('/mail_config_table',async(req,res)=>{
+  const all_mail_config=await getAllMailTemplateAPI()
+
+  res.render('mail_config_table',{all_mail_config})
+
+})
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);

@@ -548,7 +548,6 @@
       "emoticons",
       "fullscreen",
       "help",
-      "image",
       "importcss",
       "insertdatetime",
       "visualblocks",

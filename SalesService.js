@@ -38,5 +38,17 @@ const getAllVendorsAPI=async()=>{
     return {}
   }
 }
+const getAllMailTemplateAPI=async()=>{
+  try{
+    const get_mail_templates=await fetch(`${API_URL}/get_all_alert_config`)
 
-module.exports={getAllSalesApi,getAllVendorsAPI}
+    let get_mail_templates_res=await get_mail_templates.json()
+
+    return get_mail_templates_res
+  }
+  catch(err){
+    console.log(err)
+    return {}
+  }
+}
+module.exports={getAllSalesApi,getAllVendorsAPI,getAllMailTemplateAPI}

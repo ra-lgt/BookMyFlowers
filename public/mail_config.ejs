@@ -1,0 +1,324 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Company</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-style-mode" content="1">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.png">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/animate.css">
+    <link rel="stylesheet" href="assets/css/plugins/apexcharts.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-jvectormap-2.0.5.css">
+    <link rel="stylesheet" href="assets/css/plugins/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/vendor/icomoon.css">
+    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css">
+    <link rel="stylesheet" href="assets/css/vendor/rating.css">
+    <link rel="stylesheet" href="assets/css/vendor/dropzone.css">
+    <link rel="stylesheet" href="assets/css/plugins/dropify.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/spacing.css">
+    <link rel="stylesheet" href="assets/css/plugins/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/buttons.bootstrap5.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/select2.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery.timepicker.css">
+    <link rel="stylesheet" href="assets/css/plugins/tagify.css">
+    <link rel="stylesheet" href="assets/css/plugins/flatpickr.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/jquery-ui.css">
+    <link rel="stylesheet" href="assets/css/plugins/fullcalendar.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/ion.rangeSlider.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/simplebar.css">
+    <link rel="stylesheet" href="assets/css/plugins/waves.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/nano.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+</head>
+
+<body class="body-area">
+    <!-- Preloader start -->
+    <div class="preloader" id="preloader">
+        <div class="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+    <!-- Preloader start -->
+
+    <!-- Dashboard area start -->
+    <div class="page__full-wrapper">
+
+        <!-- App sidebar area start -->
+        <!-- app-sidebar-start -->
+        <%- include('sideNavBar', { activePage: 'customers' }) %>
+        <div class="app__offcanvas-overlay"></div>
+        <!-- app-sidebar-end -->
+        <!-- App sidebar area end -->
+
+        <div class="page__body-wrapper">
+            <!-- App header area start -->
+            <%- include('header') %>
+            <div class="body__overlay"></div>
+            <!-- App header area end -->
+
+            <!-- App side area start -->
+            <div class="app__slide-wrapper">
+                <div class="breadcrumb__area">
+                    <div class="breadcrumb__wrapper mb-25">
+                        <nav>
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Contacts</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-xxl-12">
+                        <div class="card__wrapper">
+                            <div class="card__title-wrap mb-20">
+                                <h3 class="card__heading-title">Create Mail Template</h3>
+                            </div>
+                            <div class="custom-form style_two">
+                                <!-- Stepper -->
+                                <div class="steps__form">
+                                    <div class="steps__row setup-panel-2 d-flex justify-content-between">
+                                        <div class="steps__step">
+                                            <a href="#step-1" class="step-circle ml-0 step-active" data-toggle="tooltip" data-placement="top" aria-label="Sender Information" data-bs-original-title="Sender Information">
+                                                <span><i class="fas fa-folder"></i></span>
+                                            </a>
+                                        </div>
+                                        <div class="steps__step">
+                                            <a href="#step-2" class="step-circle" data-toggle="tooltip" data-placement="top" aria-label="Personal Data" data-bs-original-title="Personal Data">
+                                                <span><i class="fas fa-pencil-alt"></i></span>
+                                            </a>
+                                        </div>
+                                        <div class="steps__step">
+                                            <a href="#step-3" class="step-circle" data-toggle="tooltip" data-placement="top" aria-label="Terms and Conditions" data-bs-original-title="Terms and Conditions">
+                                                <span><i class="fas fa-images"></i></span>
+                                            </a>
+                                        </div>
+                                        <div class="steps__step">
+                                            <a href="#step-4" class="step-circle mr-0" data-toggle="tooltip" data-placement="top" aria-label="Finish" data-bs-original-title="Finish">
+                                                <span><i class="fas fa-check"></i></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- First Step -->
+                                <form>
+                                    <div class="row setup-content-2" id="step-1" style="">
+                                        <div class="col-md-12">
+                                            <h3 class="font-weight-bold pl-0 my-4">
+                                                <strong>Sender Information</strong>
+                                            </h3>
+                                            <div class="form-group md-form">
+                                                <label for="yourEmail-2" data-error="wrong" data-success="right">Sender Email</label>
+                                                <input id="sender_email" type="email" required="required" class="form-control validate" aria-required="true" value="<%= mail_config_data?.sender_email %>">
+                                            </div>
+                                            <div class="form-group md-form mt-3">
+                                                <label for="yourPassword2" data-error="wrong" data-success="right">Sender App Password</label>
+                                                <input id="sender_password" type="text" required="required" class="form-control validate" aria-required="true" value="<%= mail_config_data?.sender_password %>">
+                                            </div>
+
+                                            <button class="nextBtn-2 btn btn-primary" type="button">Next</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Second Step -->
+                                    <div class="row setup-content-2" id="step-2" style="display: none;">
+                                        <div class="col-md-12">
+                                            <h3 class="font-weight-bold pl-0 my-4">
+                                                <strong>Receiver Data</strong>
+                                            </h3>
+                                            <div class="form-group md-form">
+                                                <label for="yourName2" data-error="wrong" data-success="right">First
+                                                    Name</label>
+                                                <input id="yourName2" type="text" required="required" class="form-control validate" disabled value="configured automatically">
+                                            </div>
+                                            <div class="form-group md-form mt-3">
+                                                <label for="secondName2" data-error="wrong" data-success="right">Last
+                                                    Name</label>
+                                                <input id="secondName2" type="text" required="required" class="form-control validate"  disabled value="configured automatically">
+                                            </div>
+                                            <div class="form-group md-form">
+                                                <label for="surname2" data-error="wrong" data-success="right">Email</label>
+                                                <input id="surname2" type="text" required="required" class="form-control validate"  disabled value="configured automatically">
+                                            </div>
+                                            <div class="from__input-box">
+                                                <div class="form__input-title">
+                                                    <label for="defaultSelect" class="form-label">Alert Type</label>
+                                                </div>
+                                                <div class="form__input">
+                                                    <select id="alert_select" class="form-select">
+                                                        <option disabled>Default select</option>
+                                                        <option value="out_of_stock" <%= mail_config_data?.alert_select == 'out_of_stock' ? 'selected="selected"' : '' %>>When out of stock</option>
+                                                        <option value="less_product_count_10" <%= mail_config_data?.alert_select == 'less_product_count_10' ? 'selected="selected"' : '' %>>
+                                                            When stock is less than 10
+                                                        </option>
+                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group md-form mt-3">
+                                                <label for="yourAddress2" data-error="wrong" data-success="right">Subject</label>
+                                                <textarea id="email_subject" required="required" rows="2" class="md-textarea validate form-control" >  <%= mail_config_data?.email_subject || '' %></textarea>
+                                            </div>
+                                            <button class="prevBtn-2 btn btn-secondary" type="button">Previous</button>
+                                            <button class="nextBtn-2 btn btn-primary" type="button">Next</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Third Step -->
+                                    <div class="row setup-content-2" id="step-3" style="display: none;">
+                                        <div class="col-md-12">
+                                            <h3 class="font-weight-bold pl-0 my-4">
+                                                <strong>Body Data</strong>
+                                            </h3>
+
+                                            <div class="col-xxl-12">
+                                                <div class="card__wrapper">
+                                                    <div class="card__title-wrap mb-20">
+                                                        <h5 class="card__heading-title">Body Editor</h5>
+                                                    </div>
+                                                    <div class="from__input-box">
+                                                        <textarea id="tinymce_simple_textarea"><%- mail_config_data?.body_content %></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                           
+                                           
+                                            <button class="prevBtn-2 btn btn-secondary" type="button">Previous</button>
+                                            <button class="nextBtn-2 btn btn-primary" type="button">Next</button>
+                                        </div>
+                                    </div>
+                                    <!-- Fourth Step -->
+                                    <div class="row setup-content-2" id="step-4" style="display: none;">
+                                        <div class="col-md-12">
+                                            <h3 class="font-weight-bold pl-0 my-4">
+                                                <strong>Finish</strong>
+                                            </h3>
+                                            <h2 class="text-center font-weight-bold my-4">Click on Save!</h2>
+                                            <button class="prevBtn-2 btn btn-primary" type="button">Previous</button>
+                                            <button class="btn btn-primary" onclick="handleMailConfigSubmit(event)" type="submit">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                async function handleMailConfigSubmit(event) {
+                    event.preventDefault();
+
+                    const sender_email=document.getElementById('sender_email').value
+                    const sender_password=document.getElementById('sender_password').value
+                    const alert_select=document.getElementById('alert_select').value
+                    const email_subject=document.getElementById('email_subject').value
+                    const body_content = tinymce.get("tinymce_simple_textarea").getContent();
+
+                    const formData=new FormData()
+
+                    formData.append('sender_email',sender_email)
+                    formData.append('sender_password',sender_password)
+                    formData.append('alert_select',alert_select)
+                    formData.append('email_subject',email_subject)
+                    formData.append('body_content',body_content)
+
+                    const save_config=await fetch('http://127.0.0.1:8000/post_alert_mail_config',{
+                        method:'POST',
+                        body:formData
+                    })
+                    
+                    
+                }
+            </script>
+            <!-- App side area end -->
+
+            <!-- footer area start -->
+
+            <!-- footer area end -->
+        </div>
+    </div>
+
+
+
+    <!-- new company details edit modal end -->
+
+    <!-- Back to top start -->
+    <div class="progress-wrap">
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- Back to top end -->
+
+    <!-- JS here -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/jquery-3.7.0.js"></script>
+    <script src="assets/js/vendor/isotope.pkgd.js"></script>
+    <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/vendor/magnific-popup.min.js"></script>
+    <script src="assets/js/vendor/ajax-form.js"></script>
+    <script src="assets/js/vendor/jquery.repeater.js"></script>
+    <script src="assets/js/plugins/waypoints.min.js"></script>
+    <script src="assets/js/plugins/dayjs.min.js"></script>
+    <script src="assets/js/plugins/loader.js"></script>
+    <script src="assets/js/plugins/jsvectormap.min.js"></script>
+    <script src="assets/js/plugins/world-merc.js"></script>
+    <script src="assets/js/plugins/swiper-bundle.min.js"></script>
+    <script src="assets/js/plugins/popper.min.js"></script>
+    <script src="assets/js/plugins/simplebar.min.js"></script>
+    <script src="assets/js/plugins/simplebar-active.js"></script>
+    <script src="assets/js/plugins/backtotop.js"></script>
+    <script src="assets/js/plugins/smooth-scrollbar.js"></script>
+    <script src="assets/js/plugins/cleave.min.js"></script>
+    <script src="assets/js/plugins/datatables.min.js"></script>
+    <script src="assets/js/plugins/jquery.dataTables.min.js"></script>
+    <script src="assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+    <script src="assets/js/plugins/dataTables.buttons.min.js"></script>
+    <script src="assets/js/plugins/jszip.min.js"></script>
+    <script src="assets/js/plugins/pdfmake.min.js"></script>
+    <script src="assets/js/plugins/vfs_fonts.js"></script>
+    <script src="assets/js/plugins/buttons.html5.min.js"></script>
+    <script src="assets/js/plugins/buttons.print.min.js"></script>
+    <script src="assets/js/plugins/buttons.colVis.min.js"></script>
+    <script src="assets/js/plugins/steps-form.js"></script>
+    <script src="assets/js/plugins/dropify.min.js"></script>
+    <script src="assets/js/plugins/dropzone.js"></script>
+    <script src="assets/js/plugins/tinymce.min.js"></script>
+    <script src="assets/js/plugins/custom.js"></script>
+    <script src="assets/js/plugins/typeahead.bundle.min.js"></script>
+    <script src="assets/js/plugins/bloodhound.js"></script>
+    <script src="assets/js/plugins/select2.full.min.js"></script>
+    <script src="assets/js/plugins/jquery.timepicker.min.js"></script>
+    <script src="assets/js/plugins/flatpickr.js"></script>
+    <script src="assets/js/plugins/tagify.js"></script>
+    <script src="assets/js/plugins/jquery-ui.min.js"></script>
+    <script src="assets/js/plugins/sweetalert2.all.min.js"></script>
+    <script src="assets/js/plugins/apexcharts.min.js"></script>
+    <script src="assets/js/plugins/fullcalendar.min.js"></script>
+    <script src="assets/js/plugins/ion.rangeSlider.min.js"></script>
+    <script src="assets/js/vendor/custom-tagify.js"></script>
+    <script src="assets/js/vendor/height-equal.js"></script>
+
+    <script src="assets/js/vendor/rangeslider-script.js"></script>
+    <script src="assets/js/vendor/jquery.barrating.js"></script>
+    <script src="assets/js/vendor/rating-script.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/vendor/sidebar.js"></script>
+
+</body>
+
+</html>
