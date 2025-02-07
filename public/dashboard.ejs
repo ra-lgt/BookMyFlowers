@@ -48,20 +48,18 @@
     <link rel="stylesheet" href="assets/css/plugins/nano.min.css" />
     <link rel="stylesheet" href="assets/css/main.css" />
   </head>
-  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="display: none;" aria-hidden="true">
+  <div class="modal fade hide" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">New Notifications
                 </h1>
 
             </div>
             <div class="modal-body">
-                ...
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Understood</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="handleNotificationViewed(event)">Understood</button>
             </div>
         </div>
     </div>
@@ -801,6 +799,60 @@
     <!-- Back to top end -->
 
     <!-- JS here -->
+     <script>
+      let alertsArray =[]
+      document.addEventListener("DOMContentLoaded", async function () {
+
+        const get_alerts=await fetch('http://127.0.0.1:8000/get_all_notifications')
+
+        const get_alerts_res=await get_alerts.json()
+
+        const modalBody = document.querySelector(".modal-body");
+
+        const ul = document.createElement("ul");
+        ul.style.listStyle = "none"; 
+
+        alertsArray = Array.isArray(get_alerts_res) ? get_alerts_res : [get_alerts_res];
+
+        alertsArray=alertsArray.filter(alert=>alert?.is_viewed!=1)
+
+        alertsArray.forEach((alert) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+                <small>ID: ${alert?.id}</small> 
+                <br> <small>Source: ${alert?.source}</small> 
+                <br> <small>Message: ${alert?.source =="posts"? "New Enquiry Received" :alert?.message}</small>
+                <br> <small>Created At: ${alert?.created_at}</small>
+                <hr>
+            `;
+          ul.appendChild(li);
+        });
+        modalBody.appendChild(ul);
+
+        if(alertsArray?.length != 0){
+
+          var myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
+        myModal.show();
+        }
+
+
+
+});
+      async function handleNotificationViewed(event) {
+        event.preventDefault();
+        let alert_ids=alertsArray.map(alert=>parseInt(alert?.id))
+
+        const make_viewed=await fetch('http://127.0.0.1:8000/update_notification_status_as_read',{
+          method:'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({notification_ids:alert_ids})
+        })
+        
+      }
+
+     </script>
     <script
       data-cfasync="false"
       src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"
@@ -869,9 +921,3 @@
     margin-bottom: 10px !important; 
 }
 </style>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var myModal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
-    myModal.show();
-});
-</script>

@@ -144,8 +144,26 @@
                     </div>
                     <div class="col-xxl-12">
                         <div class="card__wrapper">
+                            <div id="baseStyleToolbar_wrapper" class="dataTables_wrapper no-footer">
+                                <div class="dt-buttons">          
+                                    <button class="dt-button buttons-copy buttons-html5" tabindex="0" aria-controls="baseStyleToolbar" type="button">
+                                        <span>Copy</span>
+                                    </button> 
+                                    <button class="dt-button buttons-csv buttons-html5" tabindex="0" aria-controls="baseStyleToolbar" type="button">
+                                        <span>CSV</span>
+                                    </button> 
+                                    <button class="dt-button buttons-excel buttons-html5" tabindex="0" aria-controls="baseStyleToolbar" type="button">
+                                        <span>Excel</span>
+                                    </button> 
+                                    <button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="baseStyleToolbar" type="button">
+                                        <span>PDF</span>
+                                    </button> 
+                                    <button class="dt-button buttons-print" tabindex="0" aria-controls="baseStyleToolbar" type="button">
+                                        <span>Print</span>
+                                    </button>
+                                 </div>
                             <div class="table__wrapper table-responsive">
-                                <table class="table mb-20" id="dataTableDefualt">
+                                <table class="table mb-20 table-striped dataTable no-footer" id="baseStyleToolbar" aria-describedby="baseStyleToolbar_info">
                                     <thead>
                                         <tr class="table__title table__sort">
 
@@ -192,6 +210,7 @@
                                         <% }) %>
                                     </tbody>
                                 </table>
+                            </div>
                             </div>
                         </div>
                     </div>
