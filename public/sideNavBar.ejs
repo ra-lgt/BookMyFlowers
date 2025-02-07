@@ -84,15 +84,7 @@
               </a>
             </li>
 
-            <li class="slide ">
-              <a onclick="handleLogout()" class="sidebar__menu-item">
-                <div class="side-menu__icon">
-                  <i class="icon-arrow-right-to-bracket"></i>
-                </div>
-                <span class="sidebar__menu-label">Logout</span>
-               
-              </a>
-            </li>
+     
           </ul>
           
         <div class="sidebar-right" id="sidebar-right"></div>
@@ -100,16 +92,4 @@
 
     </div>
   </div>
-  <script>
-
-    const handleLogout = async () => {
-      const logout_route=await fetch('/logout')
-
-      const logout_data=await logout_route.json()
-
-      if(logout_data?.status_code===200){
-        localStorage.removeItem('user_name')
-        window.location.href='/'
-      }
-    }
-  </script>
+ 
