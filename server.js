@@ -310,7 +310,13 @@ app.get('/mail_config',async(req,res)=>{
 app.get('/mail_config_table',async(req,res)=>{
   const all_mail_config=await getAllMailTemplateAPI()
 
-  res.render('mail_config_table',{all_mail_config})
+  let mail_config_length=all_mail_config.length
+
+  let low_product_count=all_mail_config.filter((config)=>config?.alert_select=="less_product_count_10").length
+
+  let out_of_stock_count=all_mail_config.filter((config)=>config?.alert_select=="out_of_stock").length
+
+  res.render('mail_config_table',{all_mail_config,mail_config_length,low_product_count,out_of_stock_count})
 
 })
 

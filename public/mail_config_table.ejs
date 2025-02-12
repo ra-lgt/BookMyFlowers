@@ -89,9 +89,9 @@
                                     <span><i class="fa-solid fa-users"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Customers</h6>
+                                    <h6 class="card__sub-title mb-10">Total Mail Config</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= 0 %></h3>
+                                        <h3 class="card__title"><%= mail_config_length %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -104,9 +104,9 @@
                                     <span><i class="fa-solid fa-wallet"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Spend</h6>
+                                    <h6 class="card__sub-title mb-10">Total Low Porduct Config</h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title">₹ <%= 0 %></h3>
+                                        <h3 class="card__title"> <%= low_product_count %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -119,9 +119,9 @@
                                     <span><i class="fa-solid fa-box-open"></i></span>
                                 </div>
                                 <div class="card__title-wrap">
-                                    <h6 class="card__sub-title mb-10">Total Orders </h6>
+                                    <h6 class="card__sub-title mb-10">Total Out of Stock Config </h6>
                                     <div class="d-flex flex-wrap align-items-end gap-10">
-                                        <h3 class="card__title"><%= 0 %></h3>
+                                        <h3 class="card__title"><%= out_of_stock_count %></h3>
                                     </div>
                                 </div>
                             </div>
@@ -161,6 +161,12 @@
                                     <button class="dt-button buttons-print" tabindex="0" aria-controls="baseStyleToolbar" type="button">
                                         <span>Print</span>
                                     </button>
+
+                                    <a href="/mail_config">
+                                    <button class="dt-button buttons-pdf buttons-html5" tabindex="0" aria-controls="baseStyleToolbar" type="button">
+                                        <span>Create New Template</span>
+                                    </button> 
+                                </a>
                                  </div>
 
                             <div class="table__wrapper table-responsive">
