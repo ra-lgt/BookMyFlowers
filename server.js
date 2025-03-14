@@ -286,9 +286,9 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get('/',async(req,res)=>{
+app.get('/',isAuthenticated,async(req,res)=>{
   
-  res.render('signin')
+  res.render('home')
 })
 
 app.get('/mail_config',async(req,res)=>{
