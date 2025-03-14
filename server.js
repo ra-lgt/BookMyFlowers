@@ -8,7 +8,7 @@ const {getAllSalesApi,getAllVendorsAPI,getAllMailTemplateAPI}=require('./SalesSe
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
-
+const HOST = '0.0.0.0'; 
 app.use(session({
   secret: "book_my_flowers",  // Change this to a strong secret
   resave: false,
@@ -320,6 +320,6 @@ app.get('/mail_config_table',async(req,res)=>{
 
 })
 
-app.listen(PORT, () => {
+app.listen(PORT,HOST,() => {
   console.log(`Server is running at http://localhost:${PORT}`);
 });
