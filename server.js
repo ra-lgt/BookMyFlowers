@@ -321,5 +321,5 @@ app.get('/mail_config_table',async(req,res)=>{
 })
 
 app.listen(PORT,HOST,() => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+  console.log(`Server is running at http://${HOST}:${PORT}`);
 });
