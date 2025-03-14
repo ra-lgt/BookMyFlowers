@@ -7,7 +7,7 @@ const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustome
 const {getAllSalesApi,getAllVendorsAPI,getAllMailTemplateAPI}=require('./SalesService')
 const app = express();
 app.use(express.json());
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(session({
   secret: "book_my_flowers",  // Change this to a strong secret
