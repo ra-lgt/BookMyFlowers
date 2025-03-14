@@ -5,6 +5,7 @@ const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=requir
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
 const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails,getContactFormDetails}=require('./Customers')
 const {getAllSalesApi,getAllVendorsAPI,getAllMailTemplateAPI}=require('./SalesService')
+const {API_URL}=require('Config')
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
@@ -252,7 +253,7 @@ app.post('/signin',async(req,res)=>{
   const email=req.body.email
   const password=req.body.password
 
-  const check_cred=await fetch('http://localhost:8000/admin_signin',{
+  const check_cred=await fetch('https://book-my-flower-api.vercel.app/admin_signin',{
     method:'POST',
     headers:{
       'Content-Type':'application/json'
