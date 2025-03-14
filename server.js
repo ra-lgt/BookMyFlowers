@@ -5,7 +5,6 @@ const {getAllProductsAPI,getSalesBasedProductAPI,getAllProductDetailsAPI}=requir
 const {getAllOrdersWeekAPI,getAllOrdersAPI}=require('./Orders')
 const {getAllCustomersApi,getCustomerReviewAPI,getAllCustomersAPIData,getCustomerDetails,getContactFormDetails}=require('./Customers')
 const {getAllSalesApi,getAllVendorsAPI,getAllMailTemplateAPI}=require('./SalesService')
-const {API_URL}=require('Config')
 const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
