@@ -1,3 +1,3 @@
-const API_URL="http://127.0.0.1:8000"
+const API_URL="https://book-my-flower-api.vercel.app"
 
 module.exports={API_URL}
