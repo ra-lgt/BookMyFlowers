@@ -237,7 +237,7 @@
                     formData.append('email_subject',email_subject)
                     formData.append('body_content',body_content)
 
-                    const save_config=await fetch('http://127.0.0.1:8000/post_alert_mail_config',{
+                    const save_config=await fetch('https://book-my-flower-api.vercel.app/post_alert_mail_config',{
                         method:'POST',
                         body:formData
                     })

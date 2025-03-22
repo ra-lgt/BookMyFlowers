@@ -80,7 +80,7 @@ function stopLoader(id){
 
   async function getCategoryBasedSalesApi() {
     const get_all_category_based_sales = await fetch(
-      "http://127.0.0.1:8000/get_all_category_based_sales"
+      "https://book-my-flower-api.vercel.app/get_all_category_based_sales"
     );
 
     const get_all_category_based_sales_res =
@@ -140,7 +140,7 @@ function stopLoader(id){
     }).toString();
 
     const get_cart_sales_stat = await fetch(
-      `http://127.0.0.1:8000/get_cart_and_sales?${params}`,
+      `https://book-my-flower-api.vercel.app/get_cart_and_sales?${params}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -159,7 +159,7 @@ function stopLoader(id){
     }).toString();
 
     const get_order_overview_stat = await fetch(
-      `http://127.0.0.1:8000/get_sales_and_revenue_stat?${params}`
+      `https://book-my-flower-api.vercel.app/get_sales_and_revenue_stat?${params}`
     )
 
     const get_order_overview_stat_res=await get_order_overview_stat.json();
@@ -175,7 +175,7 @@ function stopLoader(id){
     }).toString();
 
     const get_state_country_sales_api = await fetch(
-      `http://127.0.0.1:8000/get_sales_based_on_country_stats?${params}`,
+      `https://book-my-flower-api.vercel.app/get_sales_based_on_country_stats?${params}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -184,7 +184,6 @@ function stopLoader(id){
 
     const get_state_country_sales_res = await get_state_country_sales_api.json();
 
-    console.log("get_state_country_sales_res",get_state_country_sales_res)
 
     return get_state_country_sales_res
     

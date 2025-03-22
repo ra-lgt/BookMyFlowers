@@ -18,7 +18,7 @@
           "</div>"
       : e.text;
   }
-  (g = await fetch('http://127.0.0.1:8000/get_kanban_data')).ok || console.error("error", g),
+  (g = await fetch('https://book-my-flower-api.vercel.app/get_kanban_data')).ok || console.error("error", g),
     (g = await g.json()),
     d &&
       d.flatpickr({
@@ -192,7 +192,7 @@
               currElement=`${a}-${parseInt(number)+1}`
             }
 
-            const saveKanbanCard=await fetch('http://127.0.0.1:8000/create_kanban_card',{
+            const saveKanbanCard=await fetch('https://book-my-flower-api.vercel.app/create_kanban_card',{
               method:'POST',
               headers:{
                 'Content-Type':'application/json'

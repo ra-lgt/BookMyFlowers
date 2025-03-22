@@ -65,7 +65,6 @@ const getSalesBasedProductAPI=async(params)=>{
       return { ...item1, ...item2 };
     })
 
-    console.log(merge_details)
 
     const final_data=merge_details?.map((value,key)=>{
       return {

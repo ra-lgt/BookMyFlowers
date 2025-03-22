@@ -803,7 +803,7 @@
       let alertsArray =[]
       document.addEventListener("DOMContentLoaded", async function () {
 
-        const get_alerts=await fetch('http://127.0.0.1:8000/get_all_notifications')
+        const get_alerts=await fetch('https://book-my-flower-api.vercel.app/get_all_notifications')
 
         const get_alerts_res=await get_alerts.json()
 
@@ -842,7 +842,7 @@
         event.preventDefault();
         let alert_ids=alertsArray.map(alert=>parseInt(alert?.id))
 
-        const make_viewed=await fetch('http://127.0.0.1:8000/update_notification_status_as_read',{
+        const make_viewed=await fetch('https://book-my-flower-api.vercel.app/update_notification_status_as_read',{
           method:'POST',
           headers: {
             'Content-Type': 'application/json'
